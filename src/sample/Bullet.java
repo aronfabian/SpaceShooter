@@ -6,6 +6,7 @@ package sample;
 public class Bullet {
     private int x;
     private int y;
+    private int bulletPow;
     private boolean isCraftBullet;
 
     /**
@@ -14,10 +15,11 @@ public class Bullet {
      * @param y coordinate
      * @param isCraftBullet =true if it belongs to a Craft
      */
-    public Bullet(int x, int y, boolean isCraftBullet) {
+    public Bullet(int x, int y, boolean isCraftBullet, int bulletPow) {
         this.x = x;
         this.y = y;
         this.isCraftBullet = isCraftBullet;
+        this.bulletPow = bulletPow;
     }
 
     public void move() {
@@ -34,5 +36,9 @@ public class Bullet {
 
     public int getX() {
         return x;
+    }
+
+    public boolean getisCraftBullet() {
+        return isCraftBullet;
     }
 }
