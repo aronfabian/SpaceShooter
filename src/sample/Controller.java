@@ -29,34 +29,8 @@ public class Controller implements KeyListener {
             e.printStackTrace();
         }
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> {
-            for (Craft craft : crafts) {
-                craft.move();
-
-                gameView.setCraft(craft.getX(), 300);
-                if (addBullet == true) {
-                    bullets.add(new Bullet(craft.getX(), craft.getY(),true));
-                }
-            }
-            boolean[] tomb = new boolean[bullets.size()];
-            int i = 0;
-            gameView.clearBullets();
-            for (Bullet bullet : bullets) {
-                bullet.move();
-                if (bullet.getY() < -270) {
-                    tomb[i] = true;
-                }
-                i++;
-                System.out.println(bullet.getY());
-
-            }
-            for (int j = 0; j < bullets.size(); j++) {
-                if (bullets.size() > 0) {
-                    if (tomb[j] == true) {
-                        bullets.remove(j);
-                    }
-                }
-            }
-            gameView.drawBullets(bullets);
+            updateCraft(gameView);
+            updateBullet(gameView);
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -101,7 +75,39 @@ public class Controller implements KeyListener {
     //functions
 
 
-    private void updateCraft(){
+    private void updateCraft(GameView gameView) {
+        for (Craft craft : crafts) {
+            craft.move();
 
+            gameView.drawCraft(craft.getX(), 300);
+            if (addBullet == true) {
+                bullets.add(new Bullet(craft.getX(), craft.getY(), true));
+            }
+        }
     }
+
+    private void updateBullet(GameView gameView) {
+        boolean[] bulletOutOfFrame = new boolean[bullets.size()];
+        int i = 0;
+        gameView.clearBullets();
+        for (Bullet bullet : bullets) {
+            bullet.move();
+            if (bullet.getY() < -270) {
+                bulletOutOfFrame[i] = true;
+            }
+            i++;
+            System.out.println(bullet.getY());
+
+        }
+        for (int j = 0; j < bullets.size(); j++) {
+            if (bullets.size() > 0) {
+                if (bulletOutOfFrame[j] == true) {
+                    bullets.remove(j);
+                }
+            }
+        }
+        gameView.drawBullets(bullets);
+    }
+
+
 }

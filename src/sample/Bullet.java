@@ -6,22 +6,22 @@ package sample;
 public class Bullet {
     private int x;
     private int y;
-    private boolean isCraft;
+    private boolean isCraftBullet;
 
     /**
      *
      * @param x coordinate
      * @param y coordinate
-     * @param isCraft =true if it belongs to a Craft
+     * @param isCraftBullet =true if it belongs to a Craft
      */
-    public Bullet(int x, int y, boolean isCraft) {
+    public Bullet(int x, int y, boolean isCraftBullet) {
         this.x = x;
         this.y = y;
-        this.isCraft = isCraft;
+        this.isCraftBullet = isCraftBullet;
     }
 
     public void move() {
-        if (isCraft == true) {
+        if (isCraftBullet == true) {
             y -= 20;
         } else {
             y += 20;
