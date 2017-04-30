@@ -61,16 +61,6 @@ public class GameView {
         bullets.clear();
     }
 
-    public void clearAsteroids() {
-        root.getChildren().removeAll(asteroids);
-        asteroids.clear();
-    }
-
-    public void clearUfos() {
-        root.getChildren().removeAll(ufos);
-        ufos.clear();
-    }
-
 
     public void drawBullets(List<Bullet> bulletList){
         for (Bullet b : bulletList) {

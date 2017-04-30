@@ -146,7 +146,7 @@ public class Controller implements KeyListener {
     }
 
     private void updateAsteroid(GameView gameView) {
-        gameView.clearAsteroids();
+        // gameView.clearAsteroids();
         AsteroidOutOfFrame(320);
         //remove asteroids
         Iterator<Asteroid> iter1 = asteroids.iterator();
@@ -166,7 +166,7 @@ public class Controller implements KeyListener {
     }
 
     private void updateUfo(GameView gameView) {
-        gameView.clearUfos();
+        //  gameView.clearUfos();
         UfoOutOfFrame(320);
         //remove asteroids
         Iterator<Ufo> iter = ufos.iterator();
