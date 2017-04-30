@@ -27,7 +27,7 @@ public class Controller implements KeyListener {
         GameView gameView = new GameView();
         gameView.setKeyListener(this);
       
-        crafts.add(new Craft(50, 300));
+        crafts.add(new Craft(50, 300, 0));
 
         try {
             gameView.build(ps);
