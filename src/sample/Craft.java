@@ -7,10 +7,12 @@ public class Craft {
     private int dx;
     private int x;
     private int y;
+    private int score;
 
-    public Craft(int x, int y) {
+    public Craft(int x, int y, int score) {
         this.x = x;
         this.y = y;
+        this.score = score;
     }
 
     public void setDx(int dx) {
@@ -35,5 +37,13 @@ public class Craft {
 
     public int getY() {
         return y;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
