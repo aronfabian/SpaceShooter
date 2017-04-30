@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Controller implements KeyListener {
@@ -24,7 +25,7 @@ public class Controller implements KeyListener {
     public void start() {
         GameView gameView = new GameView();
         gameView.setKeyListener(this);
-        crafts.add(new Craft(50, 300));
+        crafts.add(new Craft(50, 300, 0));
         ufos.add(new Ufo(400, 200));
         try {
             gameView.build(ps);
@@ -71,6 +72,7 @@ public class Controller implements KeyListener {
         crafts.get(0).setDx(0);
     }
 
+
     @Override
     public void exit() {
         System.exit(0);
@@ -85,48 +87,69 @@ public class Controller implements KeyListener {
 
             gameView.drawCraft(craft.getX(), 300);
             if (addBullet == true) {
-                bullets.add(new Bullet(craft.getX(), craft.getY(), true, 1));
+                bullets.add(new Bullet(craft.getX(), craft.getY(), true, 1, false));
+            }
+        }
+    }
+
+
+    private void bulletOutOfFrame(int maximumDist) {
+        for (Bullet bullet : bullets) {
+            if (bullet.getY() < maximumDist) {
+                bullet.setDestroyBullet(true);
             }
         }
     }
 
     private void updateBullet(GameView gameView) {
-        boolean[] bulletOutOfFrame = new boolean[bullets.size()];
-        int i = 0;
         gameView.clearBullets();
-        for (Bullet bullet : bullets) {
-            bullet.move();
-            if (bullet.getY() < -270) {
-                bulletOutOfFrame[i] = true;
+        bulletOutOfFrame(-270);
+
+        //remove bullets
+        Iterator<Bullet> iter = bullets.iterator();
+        while (iter.hasNext()) {
+            Bullet bullet = iter.next();
+            if (bullet.getIsDestroyBullet() == true) {
+                iter.remove();
             }
-            i++;
-            System.out.println(bullet.getY());
 
         }
-        for (int j = 0; j < bullets.size(); j++) {
-            if (bullets.size() > 0) {
-                if (bulletOutOfFrame[j] == true) {
-                    bullets.remove(j);
-                }
-            }
+
+        //move bullets
+        for (Bullet bullet : bullets) {
+            bullet.move();
         }
+
         gameView.drawBullets(bullets);
     }
 
-    private void bulletCollision(boolean isCraftBullet, double threshDist) {
+    private void bulletCollision(double threshDist) {
         for (Bullet bullet : bullets) {
-            for (Ufo ufo : ufos) {
-                if (bullet.getisCraftBullet() == true) {
-                    if (Math.sqrt(Math.pow(bullet.getX() - ufo.getX(), 2) + Math.pow(bullet.getY() - ufo.getX(), 2)) < threshDist) {
-
+            if (bullet.getisCraftBullet() == true)  //if bullet was shot by Craft
+            {
+                for (Ufo ufo : ufos) {
+                    if (Math.sqrt(Math.pow(bullet.getX() - ufo.getX(), 2) + Math.pow(bullet.getY() - ufo.getX(), 2)) < threshDist)
+                    //if bullet is close to Ufo
+                    {
+                        ufo.setHP(ufo.getHP() - 1); //decrease Ufo HP
+                        bullet.setDestroyBullet(true); //destroy bullet flag=1
+                        crafts.get(0).setScore(crafts.get(0).getScore() + 1); //increase player's score
                     }
-                } else {
-
                 }
 
+            } else //if bullet was shot by one of the Ufo
+            {
+                for (Asteroid asteroid : asteroids) {
+                    if (Math.sqrt(Math.pow(bullet.getX() - asteroid.getX(), 2) + Math.pow(bullet.getY() - asteroid.getX(), 2)) < threshDist)
+                    //if bullet is close to Ufo
+                    {
+                        asteroid.setHP(asteroid.getHP() - 1); //decrease Asteroid HP
+                        bullet.setDestroyBullet(true); //destroy bullet flag=1
+                        crafts.get(0).setScore(crafts.get(0).getScore() + 1); //increase player's score
+                    }
+                }
             }
         }
-
     }
 
     private void elementCollision() {
