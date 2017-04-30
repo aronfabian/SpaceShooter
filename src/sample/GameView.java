@@ -54,13 +54,22 @@ public class GameView {
         ship.setY(y);
     }
     public void clearBullets(){
+        root.getChildren().removeAll(bullets);
         bullets.clear();
     }
-    public void setBullets(int x, int y){
-        bullet.setX(x);
-        bullet.setY(y);
-        bullets.add(bullet);
-        root.getChildren().addAll(bullet);
+    public void drawBullets(List<Bullet> bulletList){
+        for (Bullet b : bulletList) {
+            ImageView bullet1 = new ImageView(new Image("sample/bullet.png"));
+            bullet1.setX(b.getX()+151);
+            bullet1.setY(b.getY()+180);
+            bullet1.setScaleY(0.15);
+            bullet1.setScaleX(0.15);
+            bullets.add(bullet1);
+            root.getChildren().addAll(bullet1);
+        }
+
+
+
     }
 
     private ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
@@ -68,6 +77,7 @@ public class GameView {
     private Parent createContent() {
         root = new Pane();
         root.setPrefSize(800, 900);
+
 
         Image img = new Image("sample/space_bg.jpg");
         imgView = new ImageView(img);

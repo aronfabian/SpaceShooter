@@ -1,59 +1,76 @@
 package sample;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Controller implements KeyListener {
     List<Craft> crafts = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
     Stage ps;
+    boolean addBullet = false;
 
     public Controller(Stage ps) {
         this.ps = ps;
     }
 
-    public void start(){
+    public void start() {
         GameView gameView = new GameView();
         gameView.setKeyListener(this);
-        crafts.add(new Craft(50));
+        crafts.add(new Craft(50, 300));
         try {
             gameView.build(ps);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> {
+            for (Craft craft : crafts) {
+                craft.move();
 
-        TimerTask processTask = new TimerTask() {
-            @Override
-            public void run() {
-                for (Craft craft : crafts) {
-                    craft.move();
-                    System.out.println(craft.getX());
-                    gameView.setCraft(craft.getX(),300);
+                gameView.setCraft(craft.getX(), 300);
+                if (addBullet == true) {
+                    bullets.add(new Bullet(craft.getX(), craft.getY()));
                 }
-                gameView.clearBullets();
-                for (Bullet bullet : bullets) {
-                    bullet.move();
-                    gameView.setBullets(bullet.getX(),bullet.getY());
+            }
+            boolean[] tomb = new boolean[bullets.size()];
+            int i = 0;
+            gameView.clearBullets();
+            for (Bullet bullet : bullets) {
+                bullet.move();
+                if (bullet.getY() < -270) {
+                    tomb[i] = true;
                 }
+                i++;
+                System.out.println(bullet.getY());
 
             }
+            for (int j = 0; j < bullets.size(); j++) {
+                if (bullets.size() > 0) {
+                    if (tomb[j] == true) {
+                        bullets.remove(j);
+                    }
+                }
+            }
+            gameView.drawBullets(bullets);
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
 
-        };
-        Timer timer = new Timer();
-        timer.schedule(processTask, 0, 50);
     }
 
     @Override
     public void spacePressed() {
-        bullets.add(new Bullet());
+        addBullet = true;
     }
 
     @Override
     public void spaceReleased() {
-        bullets.add(new Bullet());
+        addBullet = false;
     }
 
     @Override

@@ -6,9 +6,11 @@ package sample;
 public class Craft {
     private int dx;
     private int x;
+    private int y;
 
-    public Craft(int x) {
+    public Craft(int x, int y) {
         this.x = x;
+        this.y = y;
     }
 
     public void setDx(int dx) {
@@ -29,5 +31,9 @@ public class Craft {
 
     public void setX(int x) {
         this.x = x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
