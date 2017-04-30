@@ -49,7 +49,8 @@ public class GameView {
     public void setKeyListener(KeyListener keyListener) {
         this.keyListener = keyListener;
     }
-    public void setCraft(int x, int y){
+
+    public void drawCraft(int x, int y) {
         ship.setX(x);
         ship.setY(y);
     }
