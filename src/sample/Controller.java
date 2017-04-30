@@ -18,6 +18,7 @@ public class Controller implements KeyListener {
 
     Stage ps;
     boolean addBullet = false;
+    boolean addUfoBullet = false;
 
     public Controller(Stage ps) {
         this.ps = ps;
@@ -38,21 +39,32 @@ public class Controller implements KeyListener {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> {
             updateCraft(gameView);
             updateBullet(gameView);
+            updateAsteroid(gameView);
+            updateUfo(gameView);
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
+        //4 másodpercenként megjelenik egy ufo (időzítő)
         Timeline timeline2 = new Timeline(new KeyFrame(Duration.seconds(4), ev -> {
             ufos.add(new Ufo());
         }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        timeline2.setCycleCount(Animation.INDEFINITE);
+        timeline2.play();
 
+        //2 másodpercenként megjelenik egy aszteroida (időzítő)
         Timeline timeline3 = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
             asteroids.add(new Asteroid());
         }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        timeline3.setCycleCount(Animation.INDEFINITE);
+        timeline3.play();
+
+        //2 másodpercenként lőnek az asztroidák (időzítő)
+        Timeline timeline4 = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
+            addUfoBullet = true;
+        }));
+        timeline4.setCycleCount(Animation.INDEFINITE);
+        timeline4.play();
 
 
 
@@ -109,6 +121,21 @@ public class Controller implements KeyListener {
         }
     }
 
+    private void AsteroidOutOfFrame(int edgeDistBottom) {
+        for (Asteroid asteroid : asteroids) {
+            if (asteroid.getY() > edgeDistBottom) {
+                asteroid.setHP(0);
+            }
+        }
+    }
+
+    private void UfoOutOfFrame(int edgeDistBottom) {
+        for (Ufo ufo : ufos) {
+            if (ufo.getY() > edgeDistBottom) {
+                ufo.setHP(0);
+            }
+        }
+    }
 
     private void bulletOutOfFrame(int maximumDist) {
         for (Bullet bullet : bullets) {
@@ -118,7 +145,55 @@ public class Controller implements KeyListener {
         }
     }
 
-    
+    private void updateAsteroid(GameView gameView) {
+        gameView.clearAsteroids();
+        AsteroidOutOfFrame(320);
+        //remove asteroids
+        Iterator<Asteroid> iter1 = asteroids.iterator();
+        while (iter1.hasNext()) {
+            Asteroid asteroid = iter1.next();
+            if (asteroid.getHP() == 0) {
+                iter1.remove();
+            }
+
+        }
+        //move asteroids
+        for (Asteroid asteroid : asteroids) {
+            asteroid.move();
+        }
+
+        // ezt kell még megírni gameView.drawAsteroids(asteroids);
+    }
+
+    private void updateUfo(GameView gameView) {
+        gameView.clearUfos();
+        UfoOutOfFrame(320);
+        //remove asteroids
+        Iterator<Ufo> iter = ufos.iterator();
+        while (iter.hasNext()) {
+            Ufo ufo = iter.next();
+            if (ufo.getHP() == 0) {
+                iter.remove();
+            }
+
+        }
+        //move ufos
+        for (Ufo ufo : ufos) {
+            ufo.move();
+        }
+
+        if (addUfoBullet == true) {
+            Iterator<Ufo> iter2 = ufos.iterator();
+            while (iter2.hasNext()) {
+                Ufo ufo = iter2.next();
+
+                bullets.add(new Bullet((int) ufo.getX(), (int) ufo.getY(), false, 1, false));
+            }
+        }
+        addUfoBullet = false;
+// ezt kell még megírni gameView.drawUfos(ufos);
+        // ezt kell még megírni gameView.drawAsteroids(asteroids);
+    }
     private void updateBullet(GameView gameView) {
         gameView.clearBullets();
         bulletOutOfFrame(-270);
@@ -127,7 +202,7 @@ public class Controller implements KeyListener {
         Iterator<Bullet> iter = bullets.iterator();
         while (iter.hasNext()) {
             Bullet bullet = iter.next();
-            if (bullet.getIsDestroyBullet() == true) {
+            if (bullet.getDestroyBullet() == true) {
                 iter.remove();
             }
 

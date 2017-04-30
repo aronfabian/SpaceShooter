@@ -48,7 +48,7 @@ public class Bullet {
         isCraftBullet = craftBullet;
     }
 
-    public boolean getIsDestroyBullet() {
+    public boolean getDestroyBullet() {
         return destroyBullet;
     }
 
