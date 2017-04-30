@@ -21,7 +21,7 @@ public class Ufo {
         this.dy = dy;
     }
 
-    public Ufo(int x, int y) {
+    public Ufo() {
         this.x = Math.random() * MAXSREENWITH;
         this.y = -270;
         periodCounter = 0;
