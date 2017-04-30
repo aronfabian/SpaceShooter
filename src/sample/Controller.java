@@ -34,7 +34,7 @@ public class Controller implements KeyListener {
 
                 gameView.setCraft(craft.getX(), 300);
                 if (addBullet == true) {
-                    bullets.add(new Bullet(craft.getX(), craft.getY()));
+                    bullets.add(new Bullet(craft.getX(), craft.getY(),true));
                 }
             }
             boolean[] tomb = new boolean[bullets.size()];
@@ -96,5 +96,12 @@ public class Controller implements KeyListener {
     @Override
     public void exit() {
         System.exit(0);
+    }
+
+    //functions
+
+
+    private void updateCraft(){
+
     }
 }
