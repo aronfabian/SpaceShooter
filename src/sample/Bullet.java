@@ -44,11 +44,11 @@ public class Bullet {
         return isCraftBullet;
     }
 
-    public void setCraftBullet(boolean craftBullet) {
-        isCraftBullet = craftBullet;
+    public void setCraftBullet(boolean isCraftBullet) {
+        this.isCraftBullet = isCraftBullet;
     }
 
-    public boolean getIsDestroyBullet() {
+    public boolean getDestroyBullet() {
         return destroyBullet;
     }
 
@@ -56,9 +56,6 @@ public class Bullet {
         this.destroyBullet = destroyBullet;
     }
 
-    public boolean getisCraftBullet() {
-        return isCraftBullet;
-    }
 
     public int getY() {
         return y;
