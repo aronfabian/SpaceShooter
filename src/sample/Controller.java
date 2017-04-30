@@ -12,6 +12,8 @@ import java.util.List;
 public class Controller implements KeyListener {
     List<Craft> crafts = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
+    List<Ufo> ufos = new ArrayList<>();
+
     Stage ps;
     boolean addBullet = false;
 
@@ -23,11 +25,13 @@ public class Controller implements KeyListener {
         GameView gameView = new GameView();
         gameView.setKeyListener(this);
         crafts.add(new Craft(50, 300));
+        ufos.add(new Ufo(400, 200));
         try {
             gameView.build(ps);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> {
             updateCraft(gameView);
             updateBullet(gameView);
@@ -81,7 +85,7 @@ public class Controller implements KeyListener {
 
             gameView.drawCraft(craft.getX(), 300);
             if (addBullet == true) {
-                bullets.add(new Bullet(craft.getX(), craft.getY(), true));
+                bullets.add(new Bullet(craft.getX(), craft.getY(), true, 1));
             }
         }
     }
@@ -109,5 +113,24 @@ public class Controller implements KeyListener {
         gameView.drawBullets(bullets);
     }
 
+    private void bulletCollision(boolean isCraftBullet, double threshDist) {
+        for (Bullet bullet : bullets) {
+            for (Ufo ufo : ufos) {
+                if (bullet.getisCraftBullet() == true) {
+                    if (Math.sqrt(Math.pow(bullet.getX() - ufo.getX(), 2) + Math.pow(bullet.getY() - ufo.getX(), 2)) < threshDist) {
+
+                    }
+                } else {
+
+                }
+
+            }
+        }
+
+    }
+
+    private void elementCollision() {
+
+    }
 
 }
