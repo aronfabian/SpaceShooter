@@ -7,6 +7,7 @@ public class Ufo {
     private int x;
     private int y;
     private int dx;
+    private int HP;
     private static int MOVEPERIOD = 30;
     private int periodCounter;
     private int dy;
@@ -25,6 +26,7 @@ public class Ufo {
         periodCounter = 0;
         dx = 10;
         dy = 10;
+        HP = 4;
 
     }
 
@@ -51,6 +53,15 @@ public class Ufo {
     public void setDx(int dx) {
         this.dx = dx;
     }
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+
 
     public void move() {
 
