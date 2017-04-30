@@ -4,21 +4,22 @@ package sample;
  * Created by Gyenes on 2017.04.30..
  */
 public class Asteroid {
-    private int x;
+    private double x;
     private int y;
     private int dy;
     private int HP;
+    private static int MAXSREENWITH = 320;
 
     public Asteroid(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.x = Math.random() * MAXSREENWITH;
+        this.y = -270;
         this.dy = 10;
         HP = 2;
 
 
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
