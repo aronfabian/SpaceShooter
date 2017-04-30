@@ -10,7 +10,7 @@ public class Asteroid {
     private int HP;
     private static int MAXSREENWITH = 320;
 
-    public Asteroid(int x, int y) {
+    public Asteroid() {
         this.x = Math.random() * MAXSREENWITH;
         this.y = -270;
         this.dy = 10;

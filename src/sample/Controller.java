@@ -14,6 +14,7 @@ public class Controller implements KeyListener {
     List<Craft> crafts = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
     List<Ufo> ufos = new ArrayList<>();
+    List<Asteroid> asteroids = new ArrayList<>();
 
     Stage ps;
     boolean addBullet = false;
@@ -25,8 +26,9 @@ public class Controller implements KeyListener {
     public void start() {
         GameView gameView = new GameView();
         gameView.setKeyListener(this);
-        crafts.add(new Craft(50, 300, 0));
-        ufos.add(new Ufo(400, 200));
+      
+        crafts.add(new Craft(50, 300));
+
         try {
             gameView.build(ps);
         } catch (Exception e) {
@@ -39,6 +41,21 @@ public class Controller implements KeyListener {
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+
+        Timeline timeline2 = new Timeline(new KeyFrame(Duration.seconds(4), ev -> {
+            ufos.add(new Ufo());
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+        Timeline timeline3 = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
+            asteroids.add(new Asteroid());
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+
+
 
     }
 
@@ -101,6 +118,7 @@ public class Controller implements KeyListener {
         }
     }
 
+    
     private void updateBullet(GameView gameView) {
         gameView.clearBullets();
         bulletOutOfFrame(-270);
