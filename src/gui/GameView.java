@@ -1,16 +1,22 @@
 package gui;
 
+import gameelement.Asteroid;
+import gameelement.Bullet;
+import gameelement.Ufo;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import gameelement.Asteroid;
-import gameelement.Bullet;
 import main.KeyListener;
-import gameelement.Ufo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +37,15 @@ public class GameView {
     private ImageView background;
     private Pane root;
     private ImageView craft;
+    private Rectangle hpRect;
+    private Label hpLabel;
+    private Label scoreLabel;
 
     private List<ImageView> bullets = new ArrayList<ImageView>();
     private List<ImageView> ufos = new ArrayList<ImageView>();
     private List<ImageView> asteroids = new ArrayList<ImageView>();
 
     private KeyListener keyListener;
-
 
     public void setKeyListener(KeyListener keyListener) {
         this.keyListener = keyListener;
@@ -95,6 +103,22 @@ public class GameView {
 
     }
 
+    public void drawScore(int score) {
+        scoreLabel.setText("Score: " + score);
+    }
+
+    public void drawHp(int hp) {
+        if (hp == 0) {
+            hpRect.setWidth(100);
+            hpRect.setFill(Color.valueOf("#ff0000"));
+        } else {
+            hpRect.setFill(Color.valueOf("#00ff00"));
+            hpRect.setWidth(100 / (4 - hp));
+        }
+        hpLabel.setText("HP: " + hp);
+
+    }
+
     private ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
 
     private Parent createContent() {
@@ -107,7 +131,26 @@ public class GameView {
         craft.setScaleX(0.1);
         craft.setScaleY(0.1);
 
-        root.getChildren().addAll(background, craft);
+        hpRect = new Rectangle(100, 20);
+        hpRect.setY(10);
+        hpRect.setX(10);
+        hpRect.setFill(Color.valueOf("#00ff00"));
+
+        hpLabel = new Label("HP: 3");
+        hpLabel.setLayoutX(15);
+        hpLabel.setLayoutY(5);
+        hpLabel.setTextFill(Color.WHITE);
+        hpLabel.setFont(Font.font("", FontWeight.BOLD, 20));
+        hpLabel.setEffect(new GaussianBlur(1));
+
+        scoreLabel = new Label("Score:");
+        scoreLabel.setLayoutY(30);
+        scoreLabel.setLayoutX(15);
+        scoreLabel.setTextFill(Color.WHITE);
+        scoreLabel.setFont(Font.font("", FontWeight.BOLD, 20));
+        scoreLabel.setEffect(new GaussianBlur(1));
+        
+        root.getChildren().addAll(background, craft, hpRect, hpLabel, scoreLabel);
         return root;
     }
 
