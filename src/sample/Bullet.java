@@ -3,9 +3,7 @@ package sample;
 /**
  * Created by arons on 2017. 04. 29..
  */
-public class Bullet {
-    private int x;
-    private int y;
+public class Bullet extends GameElement {
     private int bulletPow;
     private boolean isCraftBullet;
     private boolean destroyBullet;
@@ -55,15 +53,5 @@ public class Bullet {
     public void setDestroyBullet(boolean destroyBullet) {
         this.destroyBullet = destroyBullet;
     }
-
-
-    public int getY() {
-        return y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
 
 }

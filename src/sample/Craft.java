@@ -3,20 +3,25 @@ package sample;
 /**
  * Created by arons on 2017. 04. 29..
  */
-public class Craft {
+public class Craft extends GameElement {
     private static final int LEFTSIDE = -320;
     private static final int RIGHTSIDE = 400;
     private int dx;
-    private int x;
-    private int y;
     private int score;
-    private int HP;
+    private int hp;
 
-    public Craft(int x, int y, int score, int HP) {
+    public Craft(int x, int y, int score, int hp) {
         this.x = x;
         this.y = y;
         this.score = score;
-        this.HP = HP;
+        this.hp = hp;
+    }
+
+    public Craft() {
+        x = 50;
+        y = 450;
+        score = 0;
+        hp = 3;
     }
 
     public void setDx(int dx) {
@@ -37,18 +42,6 @@ public class Craft {
         return dx;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     public int getScore() {
         return score;
     }
@@ -57,11 +50,11 @@ public class Craft {
         this.score = score;
     }
 
-    public int getHP() {
-        return HP;
+    public int getHp() {
+        return hp;
     }
 
-    public void setHP(int HP) {
-        this.HP = HP;
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 }

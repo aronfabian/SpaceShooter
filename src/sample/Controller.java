@@ -41,7 +41,7 @@ public class Controller implements KeyListener {
         GameView gameView = new GameView();
         gameView.setKeyListener(this);
 
-        crafts.add(new Craft(50, 450, 0, 3));
+        crafts.add(new Craft());
 
         try {
             gameView.build(ps);
@@ -141,7 +141,7 @@ public class Controller implements KeyListener {
     private void AsteroidOutOfFrame() {
         for (Asteroid asteroid : asteroids) {
             if (asteroid.getY() > WINDOWBOTTOM) {
-                asteroid.setHP(0);
+                asteroid.setHp(0);
             }
         }
     }
@@ -149,7 +149,7 @@ public class Controller implements KeyListener {
     private void UfoOutOfFrame() {
         for (Ufo ufo : ufos) {
             if (ufo.getY() > WINDOWBOTTOM) {
-                ufo.setHP(0);
+                ufo.setHp(0);
             }
         }
     }
@@ -162,7 +162,7 @@ public class Controller implements KeyListener {
         while (iter1.hasNext()) {
 
             Asteroid asteroid = iter1.next();
-            if (asteroid.getHP() == 0) {
+            if (asteroid.getHp() == 0) {
                 iter1.remove();
             }
         }
@@ -181,7 +181,7 @@ public class Controller implements KeyListener {
         Iterator<Ufo> iter = ufos.iterator();
         while (iter.hasNext()) {
             Ufo ufo = iter.next();
-            if (ufo.getHP() == 0) {
+            if (ufo.getHp() == 0) {
                 iter.remove();
             }
 
@@ -246,7 +246,7 @@ public class Controller implements KeyListener {
                     if (Math.sqrt(Math.pow(bullet.getX() - ufo.getX(), 2) + Math.pow(bullet.getY() - ufo.getY(), 2)) < threshDist)
                     //if bullet is close to Ufo
                     {
-                        ufo.setHP(ufo.getHP() - bullet.getBulletPow()); //decrease Ufo HP
+                        ufo.setHp(ufo.getHp() - bullet.getBulletPow()); //decrease Ufo HP
                         bullet.setDestroyBullet(true); //destroy bullet flag=1
                         crafts.get(0).setScore(crafts.get(0).getScore() + 20); //increase player's score
                     }
@@ -255,7 +255,7 @@ public class Controller implements KeyListener {
                     if (Math.sqrt(Math.pow(bullet.getX() - asteroid.getX(), 2) + Math.pow(bullet.getY() - asteroid.getY(), 2)) < threshDist)
                     //if bullet is close to Ufo
                     {
-                        asteroid.setHP(asteroid.getHP() - bullet.getBulletPow()); //decrease Asteroid HP
+                        asteroid.setHp(asteroid.getHp() - bullet.getBulletPow()); //decrease Asteroid HP
                         bullet.setDestroyBullet(true); //destroy bullet flag=1
                         crafts.get(0).setScore(crafts.get(0).getScore() + 10); //increase player's score
                     }
@@ -264,7 +264,7 @@ public class Controller implements KeyListener {
             {
                 for (Craft craft : crafts) {
                     if (Math.sqrt(Math.pow(bullet.getX() - craft.getX(), 2) + Math.pow(bullet.getY() - craft.getY(), 2)) < threshDist) {
-                        craft.setHP(craft.getHP() - bullet.getBulletPow()); //decrease Asteroid HP
+                        craft.setHp(craft.getHp() - bullet.getBulletPow()); //decrease Asteroid HP
                         bullet.setDestroyBullet(true); //destroy bullet flag=1
                     }
                 }
@@ -276,14 +276,14 @@ public class Controller implements KeyListener {
         for (Craft craft : crafts) {
             for (Ufo ufo : ufos) {
                 if (Math.sqrt(Math.pow(craft.getX() - ufo.getX(), 2) + Math.pow(craft.getY() - ufo.getY(), 2)) < threshDist) {
-                    ufo.setHP(0); //Ufo destroyed
-                    craft.setHP(craft.getHP() - 1); //decrease UFO HP
+                    ufo.setHp(0); //Ufo destroyed
+                    craft.setHp(craft.getHp() - 1); //decrease UFO HP
                 }
             }
             for (Asteroid asteroid : asteroids) {
                 if (Math.sqrt(Math.pow(craft.getX() - asteroid.getX(), 2) + Math.pow(craft.getY() - asteroid.getY(), 2)) < threshDist) {
-                    asteroid.setHP(0);//asteroid destroyed
-                    craft.setHP(craft.getHP() - 1); //decrease UFO HP
+                    asteroid.setHp(0);//asteroid destroyed
+                    craft.setHp(craft.getHp() - 1); //decrease UFO HP
                 }
             }
         }
