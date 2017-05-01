@@ -1,9 +1,6 @@
 package main;
 
-import gameelement.Asteroid;
-import gameelement.Bullet;
-import gameelement.Craft;
-import gameelement.Ufo;
+import gameelement.*;
 import gui.GameView;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -33,6 +30,7 @@ public class Controller implements KeyListener {
     List<Bullet> bullets = new ArrayList<>();
     List<Ufo> ufos = new ArrayList<>();
     List<Asteroid> asteroids = new ArrayList<>();
+    List<Gift> gifts = new ArrayList<>();
 
     Stage ps;
     boolean addBullet = false;
@@ -86,6 +84,20 @@ public class Controller implements KeyListener {
         timeline4.play();
 
 
+        //15 másodpercenként megjelenik egy ajándék
+        Timeline timeline5 = new Timeline(new KeyFrame(Duration.seconds(15), ev -> {
+            if((Math.random()>0.5)) {
+                gifts.add(new HpGift());
+            }
+            else
+            {
+                gifts.add(new WeaponGift());
+            }
+
+        }));
+        timeline5.setCycleCount(Animation.INDEFINITE);
+        timeline5.play();
+
     }
 
     @Override
@@ -136,7 +148,8 @@ public class Controller implements KeyListener {
                 bullets.add(new Bullet(craft.getX() + 310, craft.getY() + 280, true, 1, false));
             }
             craft.move();
-
+            gameView.drawHp(craft.getHp());
+            gameView.drawScore(craft.getScore());
             gameView.drawCraft(craft.getX(), craft.getY());
         }
     }

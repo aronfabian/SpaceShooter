@@ -11,7 +11,7 @@ public class Asteroid extends Enemy {
         x = (int) (Math.random() * MAXSREENWITH);
         y = -270;
         dy = 10;
-        hp = 2;
+        hp = 1;
     }
 
     public int getDy() {

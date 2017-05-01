@@ -27,8 +27,8 @@ public class Ufo extends Enemy {
         this.x = (int) (Math.random() * MAXSREENWITH);
         this.y = -200;
         periodCounter = 0;
-        dx = 10;
-        dy = 10;
+        dx = 5;
+        dy = 5;
         hp = 1;
     }
 
