@@ -44,6 +44,8 @@ public class GameView {
     private ImageView ship;
     private ImageView bullet;
     private List<ImageView> bullets;
+    private List<ImageView> asteroids;
+    private List<ImageView> ufos;
     private KeyListener keyListener;
 
     public void setKeyListener(KeyListener keyListener) {
@@ -58,6 +60,8 @@ public class GameView {
         root.getChildren().removeAll(bullets);
         bullets.clear();
     }
+
+
     public void drawBullets(List<Bullet> bulletList){
         for (Bullet b : bulletList) {
             ImageView bullet1 = new ImageView(new Image("sample/bullet.png"));

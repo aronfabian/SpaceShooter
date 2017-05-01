@@ -13,6 +13,7 @@ public class Ufo {
     private int periodCounter;
     private int dy;
 
+
     public int getDy() {
         return dy;
     }
@@ -29,6 +30,7 @@ public class Ufo {
         dy = 10;
         HP = 4;
 
+
     }
 
     public double getX() {
@@ -39,7 +41,7 @@ public class Ufo {
         return y;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -54,6 +56,7 @@ public class Ufo {
     public void setDx(int dx) {
         this.dx = dx;
     }
+
 
     public int getHP() {
         return HP;
