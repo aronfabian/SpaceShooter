@@ -9,17 +9,33 @@ public class Gift extends GameElement {
 
     protected int dy;
     private static int MAXSREENWITH = 400;
+    private boolean isExist;
+    public static final int WIDTH = 30;
+    public static final int HEIGHT = 30;
 
-    public Gift(int x, int y, int dy) {
+
+    public Gift(int x, int y, int dy, boolean isExist) {
         super(x, y);
         this.dy = dy;
+        this.isExist = isExist;
     }
 
     public Gift() {
         x = (int) (Math.random() * MAXSREENWITH);
         y = -200;
         dy = 10;
+        isExist = true;
     }
+
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setExist(boolean exist) {
+        isExist = exist;
+    }
+
+
 
     public int getDy() {
         return dy;
@@ -31,5 +47,18 @@ public class Gift extends GameElement {
 
     public void move() {
         y += dy;
+    }
+
+
+    public int getCenterX() {
+        return getX() + WIDTH / 2;
+    }
+
+    public int getCenterY() {
+        return getY() + HEIGHT / 2;
+    }
+
+    public double getRadius() {
+        return (Math.sqrt(Math.pow(WIDTH / 2, 2) + Math.pow(HEIGHT / 2, 2)));
     }
 }

@@ -58,6 +58,7 @@ public class Controller implements KeyListener {
             updateBullet(gameView);
             updateAsteroid(gameView);
             updateUfo(gameView);
+            updateGift(gameView);
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -219,11 +220,39 @@ public class Controller implements KeyListener {
         for (Bullet bullet : bullets) {
             bullet.move();
         }
-
+        //draw bullets
         gameView.drawBullets(bullets);
     }
 
+    private void updateGift(GameView gameView) {
+        GiftOutOfFrame();
+
+        //remove gifts
+        Iterator<Gift> iter = gifts.iterator();
+        while (iter.hasNext()) {
+            Gift gift = iter.next();
+            if (gift.isExist() == false) {
+                iter.remove();
+            }
+        }
+
+        //move gifts
+        for (Gift gift : gifts) {
+            gift.move();
+        }
+        // gameView.drawGifts(gifts);
+
+    }
     //outOfFrame functions
+
+    private void GiftOutOfFrame() {
+        for (Gift gift : gifts) {
+            if (gift.getY() > WINDOWBOTTOM) {
+                gift.setExist(false);
+            }
+        }
+    }
+
     private void bulletOutOfFrame() {
         for (Bullet bullet : bullets) {
             if (bullet.getY() < WINDOWTOP - BULLETOFFSET) {
