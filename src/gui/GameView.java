@@ -100,10 +100,7 @@ public class GameView {
             asteroid.setX(a.getX());
             asteroid.setY(a.getY());
             asteroids.add(asteroid);
-            Label label = new Label(a.getX() + ", " + a.getY());
-            label.setLayoutX(a.getX());
-            label.setLayoutY(a.getY());
-            root.getChildren().addAll(asteroid, label);
+            root.getChildren().addAll(asteroid);
         }
 
     }
