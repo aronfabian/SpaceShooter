@@ -6,6 +6,7 @@ package gameelement;
 public class Enemy extends GameElement {
     protected int hp;
 
+
     public Enemy(int x, int y, int hp) {
         super(x, y);
         this.hp = hp;

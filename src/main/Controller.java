@@ -138,7 +138,6 @@ public class Controller implements KeyListener {
                 bullets.add(new Bullet(craft.getX() + 310, craft.getY() + 280, true, 1, false));
             }
             craft.move();
-            System.out.println(craft.getX());
             gameView.drawCraft(craft.getX(), craft.getY());
         }
     }
