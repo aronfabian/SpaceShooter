@@ -1,5 +1,10 @@
-package sample;
+package main;
 
+import gameelement.Asteroid;
+import gameelement.Bullet;
+import gameelement.Craft;
+import gameelement.Ufo;
+import gui.GameView;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

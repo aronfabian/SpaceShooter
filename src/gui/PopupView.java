@@ -1,4 +1,4 @@
-package sample;
+package gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,6 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import main.Controller;
 
 /**
  * Created by arons on 2017. 04. 29..
