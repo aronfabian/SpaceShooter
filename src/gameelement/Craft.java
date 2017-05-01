@@ -7,7 +7,7 @@ public class Craft extends GameElement {
     private int dx;
     private int score;
     private int hp;
-
+    private int bulletPower;
     public static final int WIDTH = 72;
     public static final int HEIGHT = 71;
 
