@@ -27,7 +27,7 @@ public class Controller implements KeyListener {
     public void start() {
         GameView gameView = new GameView();
         gameView.setKeyListener(this);
-      
+
         crafts.add(new Craft(50, 300, 0,3));
 
         try {
@@ -36,7 +36,8 @@ public class Controller implements KeyListener {
             e.printStackTrace();
         }
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(80), ev -> {
+
             updateCraft(gameView);
             updateBullet(gameView);
             updateAsteroid(gameView);
@@ -113,6 +114,9 @@ public class Controller implements KeyListener {
     private void updateCraft(GameView gameView) {
         for (Craft craft : crafts) {
             elementCollision(10);
+
+
+            gameView.drawCraft(craft.getX(), craft.getY());
 
             if (addBullet == true) {
                 bullets.add(new Bullet(craft.getX(), craft.getY(), true, 1, false));

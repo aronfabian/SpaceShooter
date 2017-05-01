@@ -1,14 +1,13 @@
 package sample;
 
-/**
- * Created by Gyenes on 2017.04.30..
- */
+
 public class Asteroid {
     private double x;
     private int y;
     private int dy;
     private int HP;
     private static int MAXSREENWITH = 320;
+
 
 
     public Asteroid() {
@@ -34,7 +33,7 @@ public class Asteroid {
     }
 
 
-    public void setX(double x) {
+    public void setX(int x) {
         this.x = x;
     }
 
@@ -57,4 +56,7 @@ public class Asteroid {
     public void move() {
         this.y += dy;
     }
+
 }
+
+
