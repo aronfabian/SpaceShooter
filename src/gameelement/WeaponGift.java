@@ -8,7 +8,7 @@ public class WeaponGift extends Gift {
 
 
     public WeaponGift() {
-
+        super();
         this.weaponPow = (int) ((Math.random() * 4) + 1); // az ajándék fegyvererősség 1-5 között
     }
 }
