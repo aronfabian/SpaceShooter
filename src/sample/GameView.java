@@ -60,8 +60,8 @@ public class GameView {
         //bullets.clear();
         for (Bullet b : bulletList) {
             ImageView bullet1 = new ImageView(new Image(BULLET));
-            bullet1.setX(b.getX() + 151);
-            bullet1.setY(b.getY() + 180);
+            bullet1.setX(b.getX() + 310);
+            bullet1.setY(b.getY() + 280);
             bullet1.setScaleY(0.15);
             bullet1.setScaleX(0.15);
             bullets.add(bullet1);
