@@ -11,6 +11,16 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Controller implements KeyListener {
+    /*
+        ufo width: 104.39999389648438
+        ufo height: 63.0
+        bullet width: 15.0
+        bullet height: 14.699951171875
+        asteroid width: 53.70001220703125
+        asteroid height: 57.0
+        craft width: 72.0
+        craft height: 71.29998779296875
+     */
     private static final int WINDOWBOTTOM = 800;
     private static final int WINDOWTOP = 0;
     private static final int BULLETOFFSET = 30;
@@ -155,14 +165,12 @@ public class Controller implements KeyListener {
             if (asteroid.getHP() == 0) {
                 iter1.remove();
             }
-
         }
         //move asteroids
         for (Asteroid asteroid : asteroids) {
             asteroid.move();
         }
 
-        // ezt kell még megírni gameView.drawAsteroids(asteroids);
         gameView.drawAsteroids(asteroids);
     }
 
@@ -187,7 +195,7 @@ public class Controller implements KeyListener {
             Iterator<Ufo> iter2 = ufos.iterator();
             while (iter2.hasNext()) {
                 Ufo ufo = iter2.next();
-                //x-190, y-185 : ufo-bullets corretction
+                //x+120, y+95 : ufo-bullets corretction
                 bullets.add(new Bullet((int) ufo.getX() + 120, (int) ufo.getY() + 95, false, 1, false));
             }
         }

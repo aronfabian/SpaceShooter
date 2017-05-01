@@ -119,7 +119,6 @@ public class GameView {
         craft.setScaleX(0.1);
         craft.setScaleY(0.1);
 
-
         root.getChildren().addAll(imgView, craft);
         return root;
     }
