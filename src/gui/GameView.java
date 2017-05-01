@@ -33,10 +33,14 @@ public class GameView {
     private static final String ASTEROID = "gui/images/ast.png";
     private static final String BACKGORUND = "gui/images/space_bg.jpg";
     private static final String CRAFT = "gui/images/Spaceship.png";
+    private static final String WEAPONGIFT = "gui/images/weapon.png";
+    private static final String HPGIFT = "gui/images/heal.png";
 
-    private ImageView background;
     private Pane root;
+    private ImageView background;
     private ImageView craft;
+    private ImageView hpGift;
+    private ImageView weaponGift;
     private Rectangle hpRect;
     private Label hpLabel;
     private Label scoreLabel;
@@ -119,6 +123,16 @@ public class GameView {
 
     }
 
+    public void drawWeaponGift(int x, int y) {
+        weaponGift.setX(x);
+        weaponGift.setY(y);
+    }
+
+    public void drawHpGift(int x, int y) {
+        hpGift.setX(x);
+        hpGift.setY(y);
+    }
+
     private ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
 
     private Parent createContent() {
@@ -149,8 +163,21 @@ public class GameView {
         scoreLabel.setTextFill(Color.WHITE);
         scoreLabel.setFont(Font.font("", FontWeight.BOLD, 20));
         scoreLabel.setEffect(new GaussianBlur(1));
-        
-        root.getChildren().addAll(background, craft, hpRect, hpLabel, scoreLabel);
+
+        weaponGift = new ImageView(new Image(WEAPONGIFT));
+        weaponGift.setFitWidth(50);
+        weaponGift.setFitHeight(50);
+        weaponGift.setX(-100);
+        weaponGift.setY(-100);
+
+        hpGift = new ImageView(new Image(HPGIFT));
+        hpGift.setFitHeight(50);
+        hpGift.setFitWidth(50);
+        hpGift.setY(-100);
+        hpGift.setX(-100);
+
+
+        root.getChildren().addAll(background, craft, hpRect, hpLabel, scoreLabel, weaponGift, hpGift);
         return root;
     }
 
