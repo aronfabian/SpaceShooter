@@ -6,12 +6,13 @@ package gameelement;
 
 
 public class Gift extends GameElement {
-
     protected int dy;
+
     private static int MAXSREENWITH = 400;
     private boolean isExist;
     public static final int WIDTH = 30;
     public static final int HEIGHT = 30;
+
 
 
     public Gift(int x, int y, int dy, boolean isExist) {
@@ -21,7 +22,7 @@ public class Gift extends GameElement {
     }
 
     public Gift() {
-        x = (int) (Math.random() * MAXSREENWITH);
+        x = (int) (Math.random() * (MAXSREENWITH - WIDTH));
         y = -200;
         dy = 10;
         isExist = true;

@@ -5,9 +5,6 @@ package gameelement;
  */
 public class HpGift extends Gift {
 
-    // itt mindig 1 lesz a az ajándék élet
-
-
     public HpGift() {
         super();
     }
