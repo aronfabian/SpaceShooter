@@ -1,4 +1,4 @@
-package sample;
+package gui;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -6,9 +6,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import gameelement.Asteroid;
+import gameelement.Bullet;
+import main.KeyListener;
+import gameelement.Ufo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +22,11 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class GameView {
 
-    private static final String UFO = "sample/ufo.png";
-    private static final String BULLET = "sample/bullet.png";
-    private static final String ASTEROID = "sample/ast.png";
-    private static final String BACKGORUND = "sample/space_bg.jpg";
-    private static final String CRAFT = "sample/Spaceship.png";
+    private static final String UFO = "gui/images/ufo.png";
+    private static final String BULLET = "gui/images/bullet.png";
+    private static final String ASTEROID = "gui/images/ast.png";
+    private static final String BACKGORUND = "gui/images/space_bg.jpg";
+    private static final String CRAFT = "gui/images/Spaceship.png";
 
     private ImageView background;
     private Pane root;

@@ -1,4 +1,4 @@
-package sample;
+package gameelement;
 
 /**
  * Created by arons on 2017. 05. 01..

@@ -1,4 +1,4 @@
-package sample;
+package gui;
 
 
 import java.util.concurrent.Executors;
@@ -25,8 +25,8 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
+import main.Controller;
 
 public class MenuView {
 
@@ -47,7 +47,7 @@ public class MenuView {
         Pane root = new Pane();
         root.setPrefSize(800, 900);
 
-        Image img = new Image("sample/space_bg.jpg");
+        Image img = new Image("gui/images/space_bg.jpg");
         ImageView imgView = new ImageView(img);
         //imgView.setFitHeight(950);
         //imgView.setFitWidth(844);

@@ -1,4 +1,4 @@
-package sample;
+package gameelement;
 
 public class Asteroid extends Enemy {
 
