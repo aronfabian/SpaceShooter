@@ -3,11 +3,10 @@ package sample;
 /**
  * Created by Gyenes on 2017.04.30..
  */
-public class Ufo {
-    private double x;
-    private int y;
+public class Ufo extends Enemy {
+
     private int dx;
-    private int HP;
+
     private static int MOVEPERIOD = 30;
     private static int MAXSREENWITH = 400;
     private int periodCounter;
@@ -23,30 +22,12 @@ public class Ufo {
     }
 
     public Ufo() {
-        this.x = Math.random() * MAXSREENWITH;
+        this.x = (int) (Math.random() * MAXSREENWITH);
         this.y = -200;
         periodCounter = 0;
         dx = 10;
         dy = 10;
-        HP = 4;
-
-
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+        hp = 4;
     }
 
     public int getDx() {
@@ -57,14 +38,6 @@ public class Ufo {
         this.dx = dx;
     }
 
-
-    public int getHP() {
-        return HP;
-    }
-
-    public void setHP(int HP) {
-        this.HP = HP;
-    }
 
 
     public void move() {
