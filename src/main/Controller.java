@@ -164,7 +164,7 @@ public class Controller implements KeyListener {
         while (iter1.hasNext()) {
 
             Asteroid asteroid = iter1.next();
-            if (asteroid.getHp() == 0) {
+            if (asteroid.getHp() <= 0) {
                 iter1.remove();
             }
         }
@@ -182,7 +182,7 @@ public class Controller implements KeyListener {
         Iterator<Ufo> iter = ufos.iterator();
         while (iter.hasNext()) {
             Ufo ufo = iter.next();
-            if (ufo.getHp() == 0) {
+            if (ufo.getHp() <= 0) {
                 iter.remove();
             }
 
@@ -336,7 +336,8 @@ public class Controller implements KeyListener {
                         craft.setHp(craft.getHp() + 1);
 
                     } else {
-                        craft.setBulletPower(craft.getBulletPower() + gift.getWeaponPow());
+                        WeaponGift weapongift=(WeaponGift)gift;
+                        craft.setBulletPower(craft.getBulletPower() + weapongift.getWeaponPow());
                     }
                     gift.setExist(true);
                 }
