@@ -9,6 +9,6 @@ public class HpGift extends Gift {
 
 
     public HpGift() {
-        
+        super();
     }
 }
