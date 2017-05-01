@@ -145,7 +145,7 @@ public class Controller implements KeyListener {
 
             if (addBullet == true) {
                 //x+310, y+280: crat-bullet correction
-                bullets.add(new Bullet(craft.getX() + 310, craft.getY() + 280, true, 1, false));
+                bullets.add(new Bullet(craft.getX() + 310, craft.getY() + 280, true, craft.getBulletPower(), false));
             }
             craft.move();
             gameView.drawHp(craft.getHp());
@@ -300,7 +300,18 @@ public class Controller implements KeyListener {
                     craft.setHp(craft.getHp() - 1); //decrease UFO HP
                 }
             }
-        }
+            for(Gift gift:gifts)
+            {
+                if (Math.sqrt(Math.pow(craft.getCenterX() - gift.getCenterX(), 2) + Math.pow(craft.getCenterY() - gift.getCenterY(), 2)) < craft.getRadius()+gift.getRadius()) {
+
+                    if (gift instanceof HpGift) {
+                        craft.setHp(craft.getHp()+1);
+                    } else {
+                        craft.setBulletPower(craft.getBulletPower()+gift.getWeaponPow());
+                    }
+                }
+            }
+
     }
 
 }
