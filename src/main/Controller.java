@@ -241,8 +241,13 @@ public class Controller implements KeyListener {
         //move gifts
         for (Gift gift : gifts) {
             gift.move();
+            if (gift instanceof WeaponGift) {
+                gameView.drawWeaponGift(gift.getX(), gift.getY());
+            } else {
+                gameView.drawHpGift(gift.getX(), gift.getY());
+            }
         }
-        // gameView.drawGifts(gifts);
+
 
     }
     //outOfFrame functions
