@@ -86,11 +86,9 @@ public class Controller implements KeyListener {
 
         //15 másodpercenként megjelenik egy ajándék
         Timeline timeline5 = new Timeline(new KeyFrame(Duration.seconds(15), ev -> {
-            if((Math.random()>0.5)) {
+            if ((Math.random() > 0.5)) {
                 gifts.add(new HpGift());
-            }
-            else
-            {
+            } else {
                 gifts.add(new WeaponGift());
             }
 
@@ -153,7 +151,6 @@ public class Controller implements KeyListener {
             gameView.drawCraft(craft.getX(), craft.getY());
         }
     }
-
 
 
     private void updateAsteroid(GameView gameView) {
@@ -237,6 +234,7 @@ public class Controller implements KeyListener {
             }
         }
     }
+
     private void AsteroidOutOfFrame() {
         for (Asteroid asteroid : asteroids) {
             if (asteroid.getY() > WINDOWBOTTOM) {
@@ -259,7 +257,7 @@ public class Controller implements KeyListener {
             if (bullet.getIsCraftBullet() == true)  //if bullet was shot by Craft
             {
                 for (Ufo ufo : ufos) {
-                    if (Math.sqrt(Math.pow(bullet.getCenterX() - ufo.getCenterX(), 2) + Math.pow(bullet.getCenterY() - ufo.getCenterY(), 2)) < ufo.getRadius()+bullet.getRadius())
+                    if (Math.sqrt(Math.pow(bullet.getCenterX() - ufo.getCenterX(), 2) + Math.pow(bullet.getCenterY() - ufo.getCenterY(), 2)) < ufo.getRadius() + bullet.getRadius())
                     //if bullet is close to Ufo
                     {
                         ufo.setHp(ufo.getHp() - bullet.getBulletPow()); //decrease Ufo HP
@@ -268,7 +266,7 @@ public class Controller implements KeyListener {
                     }
                 }
                 for (Asteroid asteroid : asteroids) {
-                    if (Math.sqrt(Math.pow(bullet.getCenterX() - asteroid.getCenterX(), 2) + Math.pow(bullet.getCenterY() - asteroid.getCenterY(), 2)) < asteroid.getRadius()+bullet.getRadius())
+                    if (Math.sqrt(Math.pow(bullet.getCenterX() - asteroid.getCenterX(), 2) + Math.pow(bullet.getCenterY() - asteroid.getCenterY(), 2)) < asteroid.getRadius() + bullet.getRadius())
                     //if bullet is close to Ufo
                     {
                         asteroid.setHp(asteroid.getHp() - bullet.getBulletPow()); //decrease Asteroid HP
@@ -279,7 +277,7 @@ public class Controller implements KeyListener {
             } else //if bullet was shot by one of the Ufo
             {
                 for (Craft craft : crafts) {
-                    if (Math.sqrt(Math.pow(bullet.getX() - craft.getX(), 2) + Math.pow(bullet.getY() - craft.getY(), 2)) < craft.getRadius()+bullet.getRadius()) {
+                    if (Math.sqrt(Math.pow(bullet.getX() - craft.getX(), 2) + Math.pow(bullet.getY() - craft.getY(), 2)) < craft.getRadius() + bullet.getRadius()) {
                         craft.setHp(craft.getHp() - bullet.getBulletPow()); //decrease Asteroid HP
                         bullet.setDestroyBullet(true); //destroy bullet flag=1
                     }
@@ -289,29 +287,31 @@ public class Controller implements KeyListener {
 
         for (Craft craft : crafts) {
             for (Ufo ufo : ufos) {
-                if (Math.sqrt(Math.pow(craft.getCenterX() - ufo.getCenterX(), 2) + Math.pow(craft.getCenterY() - ufo.getCenterY(), 2)) < craft.getRadius()+ufo.getRadius()) {
+                if (Math.sqrt(Math.pow(craft.getCenterX() - ufo.getCenterX(), 2) + Math.pow(craft.getCenterY() - ufo.getCenterY(), 2)) < craft.getRadius() + ufo.getRadius()) {
                     ufo.setHp(0); //Ufo destroyed
                     craft.setHp(craft.getHp() - 1); //decrease UFO HP
                 }
             }
             for (Asteroid asteroid : asteroids) {
-                if (Math.sqrt(Math.pow(craft.getCenterX() - asteroid.getCenterX(), 2) + Math.pow(craft.getCenterY() - asteroid.getCenterY(), 2)) < craft.getRadius()+asteroid.getRadius()) {
+                if (Math.sqrt(Math.pow(craft.getCenterX() - asteroid.getCenterX(), 2) + Math.pow(craft.getCenterY() - asteroid.getCenterY(), 2)) < craft.getRadius() + asteroid.getRadius()) {
                     asteroid.setHp(0);//asteroid destroyed
                     craft.setHp(craft.getHp() - 1); //decrease UFO HP
                 }
             }
-            for(Gift gift:gifts)
-            {
-                if (Math.sqrt(Math.pow(craft.getCenterX() - gift.getCenterX(), 2) + Math.pow(craft.getCenterY() - gift.getCenterY(), 2)) < craft.getRadius()+gift.getRadius()) {
+            for (Gift gift : gifts) {
+                if (Math.sqrt(Math.pow(craft.getCenterX() - gift.getCenterX(), 2) + Math.pow(craft.getCenterY() - gift.getCenterY(), 2)) < craft.getRadius() + gift.getRadius()) {
 
                     if (gift instanceof HpGift) {
-                        craft.setHp(craft.getHp()+1);
+                        craft.setHp(craft.getHp() + 1);
+
                     } else {
-                        craft.setBulletPower(craft.getBulletPower()+gift.getWeaponPow());
+                        craft.setBulletPower(craft.getBulletPower() + gift.getWeaponPow());
                     }
+                    gift.setExist(true);
                 }
             }
 
-    }
+        }
 
+    }
 }
