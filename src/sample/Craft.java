@@ -4,6 +4,8 @@ package sample;
  * Created by arons on 2017. 04. 29..
  */
 public class Craft {
+    private static final int LEFTSIDE = -320;
+    private static final int RIGHTSIDE = 400;
     private int dx;
     private int x;
     private int y;
@@ -22,7 +24,13 @@ public class Craft {
     }
 
     public void move() {
-        this.x += dx;
+        if (x == LEFTSIDE && dx <= 0) {
+            return;
+        }
+        if (x == RIGHTSIDE && dx >= 0) {
+            return;
+        }
+        x += dx;
     }
 
     public int getDx() {

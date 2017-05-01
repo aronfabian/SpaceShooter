@@ -126,7 +126,6 @@ public class Controller implements KeyListener {
         for (Craft craft : crafts) {
             elementCollision(10);
 
-
             gameView.drawCraft(craft.getX(), craft.getY());
 
             if (addBullet == true) {
@@ -134,6 +133,7 @@ public class Controller implements KeyListener {
                 bullets.add(new Bullet(craft.getX() + 310, craft.getY() + 280, true, 1, false));
             }
             craft.move();
+            System.out.println(craft.getX());
             gameView.drawCraft(craft.getX(), craft.getY());
         }
     }
@@ -205,10 +205,9 @@ public class Controller implements KeyListener {
     }
 
     private void updateBullet(GameView gameView) {
-        gameView.clearBullets();
+
         bulletOutOfFrame();
         bulletCollision(50);
-
 
         //remove bullets
         Iterator<Bullet> iter = bullets.iterator();
