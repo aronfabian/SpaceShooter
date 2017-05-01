@@ -8,7 +8,7 @@ package gameelement;
 public class Gift extends GameElement {
 
     protected int dy;
-
+    private static int MAXSREENWITH = 400;
 
     public Gift(int x, int y, int dy) {
         super(x, y);
@@ -16,7 +16,9 @@ public class Gift extends GameElement {
     }
 
     public Gift() {
-        super(0, 0);
+        x = (int) (Math.random() * MAXSREENWITH);
+        y = -200;
+        dy = 10;
     }
 
     public int getDy() {
