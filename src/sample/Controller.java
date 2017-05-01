@@ -28,7 +28,7 @@ public class Controller implements KeyListener {
         GameView gameView = new GameView();
         gameView.setKeyListener(this);
       
-        crafts.add(new Craft(50, 300, 0));
+        crafts.add(new Craft(50, 300, 0,3));
 
         try {
             gameView.build(ps);
@@ -112,15 +112,15 @@ public class Controller implements KeyListener {
 
     private void updateCraft(GameView gameView) {
         for (Craft craft : crafts) {
-            craft.move();
+            elementCollision(10);
 
-            gameView.drawCraft(craft.getX(), 300);
             if (addBullet == true) {
                 bullets.add(new Bullet(craft.getX(), craft.getY(), true, 1, false));
             }
+            craft.move();
+            gameView.drawCraft(craft.getX(), 300);
         }
     }
-
     private void AsteroidOutOfFrame(int edgeDistBottom) {
         for (Asteroid asteroid : asteroids) {
             if (asteroid.getY() > edgeDistBottom) {
@@ -194,9 +194,12 @@ public class Controller implements KeyListener {
 // ezt kell még megírni gameView.drawUfos(ufos);
         // ezt kell még megírni gameView.drawAsteroids(asteroids);
     }
+
     private void updateBullet(GameView gameView) {
         gameView.clearBullets();
-        bulletOutOfFrame(-270);
+        bulletOutOfFrame(-270,350);
+        bulletCollision(10);
+
 
         //remove bullets
         Iterator<Bullet> iter = bullets.iterator();
@@ -207,7 +210,6 @@ public class Controller implements KeyListener {
             }
 
         }
-
         //move bullets
         for (Bullet bullet : bullets) {
             bullet.move();
@@ -216,37 +218,74 @@ public class Controller implements KeyListener {
         gameView.drawBullets(bullets);
     }
 
-    private void bulletCollision(double threshDist) {
-        for (Bullet bullet : bullets) {
-            if (bullet.getisCraftBullet() == true)  //if bullet was shot by Craft
-            {
-                for (Ufo ufo : ufos) {
-                    if (Math.sqrt(Math.pow(bullet.getX() - ufo.getX(), 2) + Math.pow(bullet.getY() - ufo.getX(), 2)) < threshDist)
-                    //if bullet is close to Ufo
-                    {
-                        ufo.setHP(ufo.getHP() - 1); //decrease Ufo HP
-                        bullet.setDestroyBullet(true); //destroy bullet flag=1
-                        crafts.get(0).setScore(crafts.get(0).getScore() + 1); //increase player's score
-                    }
-                }
 
-            } else //if bullet was shot by one of the Ufo
+    private void bulletOutOfFrame(int edgeDistTop,int edgeDistBottom) {
+        for (Bullet bullet : bullets) {
+            if (bullet.getY() < edgeDistTop) {
+                bullet.setDestroyBullet(true);
+            }
+            if(bullet.getY()>edgeDistBottom)
             {
-                for (Asteroid asteroid : asteroids) {
-                    if (Math.sqrt(Math.pow(bullet.getX() - asteroid.getX(), 2) + Math.pow(bullet.getY() - asteroid.getX(), 2)) < threshDist)
-                    //if bullet is close to Ufo
-                    {
-                        asteroid.setHP(asteroid.getHP() - 1); //decrease Asteroid HP
-                        bullet.setDestroyBullet(true); //destroy bullet flag=1
-                        crafts.get(0).setScore(crafts.get(0).getScore() + 1); //increase player's score
-                    }
-                }
+                bullet.setDestroyBullet(true);
             }
         }
     }
 
-    private void elementCollision() {
+    private void bulletCollision(double threshDist) {
+        for (Bullet bullet : bullets) {
+            if (bullet.getIsCraftBullet() == true)  //if bullet was shot by Craft
+            {
+                for (Ufo ufo : ufos) {
+                    if (Math.sqrt(Math.pow(bullet.getX() - ufo.getX(), 2) + Math.pow(bullet.getY() - ufo.getY(), 2)) < threshDist)
+                    //if bullet is close to Ufo
+                    {
+                        ufo.setHP(ufo.getHP() - bullet.getBulletPow()); //decrease Ufo HP
+                        bullet.setDestroyBullet(true); //destroy bullet flag=1
+                        crafts.get(0).setScore(crafts.get(0).getScore() + 20); //increase player's score
+                    }
+                }
+                for (Asteroid asteroid : asteroids) {
+                    if (Math.sqrt(Math.pow(bullet.getX() - asteroid.getX(), 2) + Math.pow(bullet.getY() - asteroid.getY(), 2)) < threshDist)
+                    //if bullet is close to Ufo
+                    {
+                        asteroid.setHP(asteroid.getHP() - bullet.getBulletPow()); //decrease Asteroid HP
+                        bullet.setDestroyBullet(true); //destroy bullet flag=1
+                        crafts.get(0).setScore(crafts.get(0).getScore() + 10); //increase player's score
+                    }
+                }
+            } else //if bullet was shot by one of the Ufo
+            {
+               for(Craft craft:crafts)
+               {
+                   if(Math.sqrt(Math.pow(bullet.getX() - craft.getX(), 2) + Math.pow(bullet.getY() - craft.getY(), 2)) < threshDist)
+                   {
+                       craft.setHP(craft.getHP() - bullet.getBulletPow()); //decrease Asteroid HP
+                       bullet.setDestroyBullet(true); //destroy bullet flag=1
+                   }
+               }
+            }
+        }
+    }
 
+    private void elementCollision(double threshDist) {
+        for(Craft craft:crafts)
+        {
+            for(Ufo ufo:ufos)
+            {
+                if (Math.sqrt(Math.pow(craft.getX() - ufo.getX(), 2) + Math.pow(craft.getY() - ufo.getY(), 2)) < threshDist)
+                {
+                    ufo.setHP(0); //Ufo destroyed
+                    craft.setHP(craft.getHP()-1); //decrease UFO HP
+                }
+            }
+            for (Asteroid asteroid:asteroids) {
+                if (Math.sqrt(Math.pow(craft.getX() - asteroid.getX(), 2) + Math.pow(craft.getY() - asteroid.getY(), 2)) < threshDist)
+                {
+                    asteroid.setHP(0);//asteroid destroyed
+                    craft.setHP(craft.getHP()-1); //decrease UFO HP
+                }
+            }
+        }
     }
 
 }
