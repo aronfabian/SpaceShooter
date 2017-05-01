@@ -9,6 +9,8 @@ public class Craft extends GameElement {
     private int dx;
     private int score;
     private int hp;
+    private static final int WIDTH=72;
+    private static final int HEIGHT=72;
 
     public Craft(int x, int y, int score, int hp) {
         this.x = x;
@@ -26,16 +28,6 @@ public class Craft extends GameElement {
 
     public void setDx(int dx) {
         this.dx = dx;
-    }
-
-    public void move() {
-        if (x == LEFTSIDE && dx <= 0) {
-            return;
-        }
-        if (x == RIGHTSIDE && dx >= 0) {
-            return;
-        }
-        x += dx;
     }
 
     public int getDx() {
@@ -56,5 +48,35 @@ public class Craft extends GameElement {
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public int getCenterX()
+    {
+        return getX()+getWIDTH()/2;
+    }
+    public int getCenterY()
+    {
+        return getY()+getHEIGHT()/2;
+    }
+    public double getRadius() {
+        return (Math.sqrt(Math.pow(getWIDTH() / 2, 2) + Math.pow(getHEIGHT() / 2, 2)));
+    }
+
+    public void move() {
+        if (x == LEFTSIDE && dx <= 0) {
+            return;
+        }
+        if (x == RIGHTSIDE && dx >= 0) {
+            return;
+        }
+        x += dx;
     }
 }
