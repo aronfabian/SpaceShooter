@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -21,19 +20,15 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class GameView {
 
-    private static final Font FONT = Font.font("", FontWeight.BOLD, 30);
     private static final String UFO = "sample/ufo.png";
     private static final String BULLET = "sample/bullet.png";
     private static final String ASTEROID = "sample/ast.png";
     private static final String BACKGORUND = "sample/space_bg.jpg";
     private static final String CRAFT = "sample/Spaceship.png";
 
-    private VBox gameBox;
-    private int currentItem = 0;
-    private ImageView imgView;
+    private ImageView background;
     private Pane root;
     private ImageView craft;
-    private ImageView bullet;
 
     private List<ImageView> bullets = new ArrayList<ImageView>();
     private List<ImageView> ufos = new ArrayList<ImageView>();
@@ -51,16 +46,9 @@ public class GameView {
         craft.setY(y);
     }
 
-    //TODO összevonható a drawBullets()-el
-    public void clearBullets() {
+    public void drawBullets(List<Bullet> bulletList) {
         root.getChildren().removeAll(bullets);
         bullets.clear();
-    }
-
-
-    public void drawBullets(List<Bullet> bulletList) {
-        //root.getChildren().removeAll(bullets);
-        //bullets.clear();
 
         for (Bullet b : bulletList) {
             ImageView bullet1 = new ImageView(new Image(BULLET));
@@ -111,15 +99,13 @@ public class GameView {
         root = new Pane();
         root.setPrefSize(800, 900);
 
-        imgView = new ImageView(new Image(BACKGORUND));
-
-        bullet = new ImageView(new Image(BULLET));
+        background = new ImageView(new Image(BACKGORUND));
 
         craft = new ImageView(new Image(CRAFT));
         craft.setScaleX(0.1);
         craft.setScaleY(0.1);
 
-        root.getChildren().addAll(imgView, craft);
+        root.getChildren().addAll(background, craft);
         return root;
     }
 
