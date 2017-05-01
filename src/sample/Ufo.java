@@ -9,7 +9,7 @@ public class Ufo {
     private int dx;
     private int HP;
     private static int MOVEPERIOD = 30;
-    private static int MAXSREENWITH = 320;
+    private static int MAXSREENWITH = 400;
     private int periodCounter;
     private int dy;
 
@@ -24,7 +24,7 @@ public class Ufo {
 
     public Ufo() {
         this.x = Math.random() * MAXSREENWITH;
-        this.y = -270;
+        this.y = -200;
         periodCounter = 0;
         dx = 10;
         dy = 10;
@@ -68,7 +68,7 @@ public class Ufo {
 
 
     public void move() {
-
+        //TODO mozgás közben ne tudjon oldalra kimenni a képernyőről
         if (periodCounter < 15) {
             x += dx;
         } else {

@@ -22,7 +22,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class GameView {
 
     private static final Font FONT = Font.font("", FontWeight.BOLD, 30);
-    private static final String UFO ="sample/ufo.png" ;
+    private static final String UFO = "sample/ufo.png";
     private static final String BULLET = "sample/bullet.png";
     private static final String ASTEROID = "sample/ast.png";
     private static final String BACKGORUND = "sample/space_bg.jpg";
@@ -36,8 +36,8 @@ public class GameView {
     private ImageView bullet;
 
     private List<ImageView> bullets = new ArrayList<ImageView>();
-    private List<ImageView> ufos= new ArrayList<ImageView>();
-    private List<ImageView> asteroids= new ArrayList<ImageView>();
+    private List<ImageView> ufos = new ArrayList<ImageView>();
+    private List<ImageView> asteroids = new ArrayList<ImageView>();
 
     private KeyListener keyListener;
 
@@ -64,8 +64,8 @@ public class GameView {
 
         for (Bullet b : bulletList) {
             ImageView bullet1 = new ImageView(new Image(BULLET));
-            bullet1.setX(b.getX() + 310);
-            bullet1.setY(b.getY() + 280);
+            bullet1.setX(b.getX()); //+310
+            bullet1.setY(b.getY()); // +280
             bullet1.setScaleY(0.15);
             bullet1.setScaleX(0.15);
             bullets.add(bullet1);
@@ -73,11 +73,11 @@ public class GameView {
         }
     }
 
-    public void drawUfo(List<Ufo> ufoList) {
+    public void drawUfos(List<Ufo> ufoList) {
         root.getChildren().removeAll(ufos);
         ufos.clear();
 
-        for(Ufo u : ufoList){
+        for (Ufo u : ufoList) {
             ImageView ufo = new ImageView(new Image(UFO));
             ufo.setScaleX(0.3);
             ufo.setScaleY(0.3);
@@ -88,16 +88,18 @@ public class GameView {
         }
 
     }
-    public void drawAsteroid(List<Asteroid> asteroidList){
+
+    public void drawAsteroids(List<Asteroid> asteroidList) {
         root.getChildren().removeAll(asteroids);
         asteroids.clear();
 
-        for (Asteroid a : asteroidList){
+        for (Asteroid a : asteroidList) {
             ImageView asteroid = new ImageView(new Image(ASTEROID));
             asteroid.setScaleX(0.3);
             asteroid.setScaleY(0.3);
             asteroid.setX(a.getX());
             asteroid.setY(a.getY());
+            asteroids.add(asteroid);
             root.getChildren().addAll(asteroid);
         }
 

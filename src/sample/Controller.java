@@ -11,6 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Controller implements KeyListener {
+    private static final int WINDOWBOTTOM = 800;
+    private static final int WINDOWTOP = 0;
+    private static final int BULLETOFFSET = 30;
     List<Craft> crafts = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
     List<Ufo> ufos = new ArrayList<>();
@@ -28,7 +31,7 @@ public class Controller implements KeyListener {
         GameView gameView = new GameView();
         gameView.setKeyListener(this);
 
-        crafts.add(new Craft(50, 300, 0,3));
+        crafts.add(new Craft(50, 450, 0, 3));
 
         try {
             gameView.build(ps);
@@ -66,8 +69,6 @@ public class Controller implements KeyListener {
         }));
         timeline4.setCycleCount(Animation.INDEFINITE);
         timeline4.play();
-
-
 
 
     }
@@ -119,42 +120,37 @@ public class Controller implements KeyListener {
             gameView.drawCraft(craft.getX(), craft.getY());
 
             if (addBullet == true) {
-                bullets.add(new Bullet(craft.getX(), craft.getY(), true, 1, false));
+                //x+310, y+280: crat-bullet correction
+                bullets.add(new Bullet(craft.getX() + 310, craft.getY() + 280, true, 1, false));
             }
             craft.move();
-            gameView.drawCraft(craft.getX(), 300);
+            gameView.drawCraft(craft.getX(), craft.getY());
         }
     }
-    private void AsteroidOutOfFrame(int edgeDistBottom) {
+
+    private void AsteroidOutOfFrame() {
         for (Asteroid asteroid : asteroids) {
-            if (asteroid.getY() > edgeDistBottom) {
+            if (asteroid.getY() > WINDOWBOTTOM) {
                 asteroid.setHP(0);
             }
         }
     }
 
-    private void UfoOutOfFrame(int edgeDistBottom) {
+    private void UfoOutOfFrame() {
         for (Ufo ufo : ufos) {
-            if (ufo.getY() > edgeDistBottom) {
+            if (ufo.getY() > WINDOWBOTTOM) {
                 ufo.setHP(0);
             }
         }
     }
 
-    private void bulletOutOfFrame(int maximumDist) {
-        for (Bullet bullet : bullets) {
-            if (bullet.getY() < maximumDist) {
-                bullet.setDestroyBullet(true);
-            }
-        }
-    }
-
     private void updateAsteroid(GameView gameView) {
-        // gameView.clearAsteroids();
-        AsteroidOutOfFrame(320);
+
+        AsteroidOutOfFrame();
         //remove asteroids
         Iterator<Asteroid> iter1 = asteroids.iterator();
         while (iter1.hasNext()) {
+
             Asteroid asteroid = iter1.next();
             if (asteroid.getHP() == 0) {
                 iter1.remove();
@@ -167,11 +163,12 @@ public class Controller implements KeyListener {
         }
 
         // ezt kell még megírni gameView.drawAsteroids(asteroids);
+        gameView.drawAsteroids(asteroids);
     }
 
     private void updateUfo(GameView gameView) {
-        //  gameView.clearUfos();
-        UfoOutOfFrame(320);
+
+        UfoOutOfFrame();
         //remove asteroids
         Iterator<Ufo> iter = ufos.iterator();
         while (iter.hasNext()) {
@@ -190,19 +187,19 @@ public class Controller implements KeyListener {
             Iterator<Ufo> iter2 = ufos.iterator();
             while (iter2.hasNext()) {
                 Ufo ufo = iter2.next();
-
-                bullets.add(new Bullet((int) ufo.getX(), (int) ufo.getY(), false, 1, false));
+                //x-190, y-185 : ufo-bullets corretction
+                bullets.add(new Bullet((int) ufo.getX() + 120, (int) ufo.getY() + 95, false, 1, false));
             }
         }
         addUfoBullet = false;
-// ezt kell még megírni gameView.drawUfos(ufos);
-        // ezt kell még megírni gameView.drawAsteroids(asteroids);
+
+        gameView.drawUfos(ufos);
     }
 
     private void updateBullet(GameView gameView) {
         gameView.clearBullets();
-        bulletOutOfFrame(-270,350);
-        bulletCollision(10);
+        bulletOutOfFrame();
+        bulletCollision(50);
 
 
         //remove bullets
@@ -223,13 +220,12 @@ public class Controller implements KeyListener {
     }
 
 
-    private void bulletOutOfFrame(int edgeDistTop,int edgeDistBottom) {
+    private void bulletOutOfFrame() {
         for (Bullet bullet : bullets) {
-            if (bullet.getY() < edgeDistTop) {
+            if (bullet.getY() < WINDOWTOP - BULLETOFFSET) {
                 bullet.setDestroyBullet(true);
             }
-            if(bullet.getY()>edgeDistBottom)
-            {
+            if (bullet.getY() > WINDOWBOTTOM) {
                 bullet.setDestroyBullet(true);
             }
         }
@@ -259,34 +255,28 @@ public class Controller implements KeyListener {
                 }
             } else //if bullet was shot by one of the Ufo
             {
-               for(Craft craft:crafts)
-               {
-                   if(Math.sqrt(Math.pow(bullet.getX() - craft.getX(), 2) + Math.pow(bullet.getY() - craft.getY(), 2)) < threshDist)
-                   {
-                       craft.setHP(craft.getHP() - bullet.getBulletPow()); //decrease Asteroid HP
-                       bullet.setDestroyBullet(true); //destroy bullet flag=1
-                   }
-               }
+                for (Craft craft : crafts) {
+                    if (Math.sqrt(Math.pow(bullet.getX() - craft.getX(), 2) + Math.pow(bullet.getY() - craft.getY(), 2)) < threshDist) {
+                        craft.setHP(craft.getHP() - bullet.getBulletPow()); //decrease Asteroid HP
+                        bullet.setDestroyBullet(true); //destroy bullet flag=1
+                    }
+                }
             }
         }
     }
 
     private void elementCollision(double threshDist) {
-        for(Craft craft:crafts)
-        {
-            for(Ufo ufo:ufos)
-            {
-                if (Math.sqrt(Math.pow(craft.getX() - ufo.getX(), 2) + Math.pow(craft.getY() - ufo.getY(), 2)) < threshDist)
-                {
+        for (Craft craft : crafts) {
+            for (Ufo ufo : ufos) {
+                if (Math.sqrt(Math.pow(craft.getX() - ufo.getX(), 2) + Math.pow(craft.getY() - ufo.getY(), 2)) < threshDist) {
                     ufo.setHP(0); //Ufo destroyed
-                    craft.setHP(craft.getHP()-1); //decrease UFO HP
+                    craft.setHP(craft.getHP() - 1); //decrease UFO HP
                 }
             }
-            for (Asteroid asteroid:asteroids) {
-                if (Math.sqrt(Math.pow(craft.getX() - asteroid.getX(), 2) + Math.pow(craft.getY() - asteroid.getY(), 2)) < threshDist)
-                {
+            for (Asteroid asteroid : asteroids) {
+                if (Math.sqrt(Math.pow(craft.getX() - asteroid.getX(), 2) + Math.pow(craft.getY() - asteroid.getY(), 2)) < threshDist) {
                     asteroid.setHP(0);//asteroid destroyed
-                    craft.setHP(craft.getHP()-1); //decrease UFO HP
+                    craft.setHP(craft.getHP() - 1); //decrease UFO HP
                 }
             }
         }

@@ -6,7 +6,7 @@ public class Asteroid {
     private int y;
     private int dy;
     private int HP;
-    private static int MAXSREENWITH = 320;
+    private static int MAXSREENWITH = 600;
 
 
 
