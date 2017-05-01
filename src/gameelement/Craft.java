@@ -7,14 +7,17 @@ public class Craft extends GameElement {
     private int dx;
     private int score;
     private int hp;
+
     public static final int WIDTH = 72;
     public static final int HEIGHT = 71;
 
-    public Craft(int x, int y, int score, int hp) {
+
+    public Craft(int x, int y, int score, int hp,int bulletPower) {
         this.x = x;
         this.y = y;
         this.score = score;
         this.hp = hp;
+        this.bulletPower=bulletPower;
     }
 
     public Craft() {
@@ -22,6 +25,7 @@ public class Craft extends GameElement {
         y = 770;
         score = 0;
         hp = 3;
+        bulletPower=1;
     }
 
     public void setDx(int dx) {
@@ -49,6 +53,14 @@ public class Craft extends GameElement {
     }
 
 
+
+    public int getBulletPower() {
+        return bulletPower;
+    }
+
+    public void setBulletPower(int bulletPower) {
+        this.bulletPower = bulletPower;
+    }
 
     public int getCenterX()
     {
