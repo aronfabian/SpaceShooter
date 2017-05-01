@@ -34,9 +34,11 @@ public class GameView {
     private Pane root;
     private ImageView craft;
     private ImageView bullet;
+
     private List<ImageView> bullets = new ArrayList<ImageView>();
     private List<ImageView> ufos= new ArrayList<ImageView>();
     private List<ImageView> asteroids= new ArrayList<ImageView>();
+
     private KeyListener keyListener;
 
 
@@ -55,9 +57,11 @@ public class GameView {
         bullets.clear();
     }
 
+
     public void drawBullets(List<Bullet> bulletList) {
         //root.getChildren().removeAll(bullets);
         //bullets.clear();
+
         for (Bullet b : bulletList) {
             ImageView bullet1 = new ImageView(new Image(BULLET));
             bullet1.setX(b.getX() + 310);

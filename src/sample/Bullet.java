@@ -6,7 +6,9 @@ package sample;
 public class Bullet {
     private int x;
     private int y;
+    private int bulletPow;
     private boolean isCraftBullet;
+    private boolean destroyBullet;
 
     /**
      *
@@ -14,10 +16,12 @@ public class Bullet {
      * @param y coordinate
      * @param isCraftBullet =true if it belongs to a Craft
      */
-    public Bullet(int x, int y, boolean isCraftBullet) {
+    public Bullet(int x, int y, boolean isCraftBullet, int bulletPow, boolean destroyBullet) {
         this.x = x;
         this.y = y;
         this.isCraftBullet = isCraftBullet;
+        this.bulletPow = bulletPow;
+        this.destroyBullet = destroyBullet;
     }
 
     public void move() {
@@ -28,6 +32,31 @@ public class Bullet {
         }
     }
 
+    public int getBulletPow() {
+        return bulletPow;
+    }
+
+    public void setBulletPow(int bulletPow) {
+        this.bulletPow = bulletPow;
+    }
+
+    public boolean getIsCraftBullet() {
+        return isCraftBullet;
+    }
+
+    public void setCraftBullet(boolean isCraftBullet) {
+        this.isCraftBullet = isCraftBullet;
+    }
+
+    public boolean getDestroyBullet() {
+        return destroyBullet;
+    }
+
+    public void setDestroyBullet(boolean destroyBullet) {
+        this.destroyBullet = destroyBullet;
+    }
+
+
     public int getY() {
         return y;
     }
@@ -35,4 +64,6 @@ public class Bullet {
     public int getX() {
         return x;
     }
+
+
 }

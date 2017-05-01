@@ -4,12 +4,15 @@ package sample;
  * Created by Gyenes on 2017.04.30..
  */
 public class Ufo {
-    private int x;
+    private double x;
     private int y;
     private int dx;
+    private int HP;
     private static int MOVEPERIOD = 30;
+    private static int MAXSREENWITH = 320;
     private int periodCounter;
     private int dy;
+
 
     public int getDy() {
         return dy;
@@ -19,16 +22,18 @@ public class Ufo {
         this.dy = dy;
     }
 
-    public Ufo(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Ufo() {
+        this.x = Math.random() * MAXSREENWITH;
+        this.y = -270;
         periodCounter = 0;
         dx = 10;
         dy = 10;
+        HP = 4;
+
 
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
@@ -36,7 +41,7 @@ public class Ufo {
         return y;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -51,6 +56,16 @@ public class Ufo {
     public void setDx(int dx) {
         this.dx = dx;
     }
+
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+
 
     public void move() {
 

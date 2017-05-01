@@ -1,8 +1,6 @@
 package sample;
 
-/**
- * Created by arons on 2017. 04. 30..
- */
+
 public class Asteroid {
     private double x;
     private int y;
@@ -10,10 +8,12 @@ public class Asteroid {
     private int HP;
     private static int MAXSREENWITH = 320;
 
+
+
     public Asteroid() {
-        this.x = Math.random() * MAXSREENWITH;
-        this.y = -270;
-        this.dy = 10;
+        x = Math.random() * MAXSREENWITH;
+        y = -270;
+        dy = 10;
         HP = 2;
 
 
@@ -31,6 +31,7 @@ public class Asteroid {
         return dy;
 
     }
+
 
     public void setX(int x) {
         this.x = x;
@@ -55,4 +56,7 @@ public class Asteroid {
     public void move() {
         this.y += dy;
     }
+
 }
+
+
