@@ -8,9 +8,8 @@ public class Ufo extends Enemy {
     private int dx;
 
     private static int MOVEPERIOD = 30;
-    private static int MAXSREENWITH = 400;
-    private static final int WIDTH=105;
-    private static final int HEIGHT=63;
+    public static final int WIDTH = 104;
+    public static final int HEIGHT = 63;
     private int periodCounter;
     private int dy;
 
@@ -24,12 +23,12 @@ public class Ufo extends Enemy {
     }
 
     public Ufo() {
-        this.x = (int) (Math.random() * MAXSREENWITH);
-        this.y = -200;
         periodCounter = 0;
-        dx = 10;
-        dy = 10;
+        dx = 5;
+        dy = 5;
         hp = 1;
+        this.x = (int) (Math.random() * (MAXSREENWITH - WIDTH - MOVEPERIOD * dx));
+        this.y = -70;
     }
 
     public int getDx() {
@@ -40,24 +39,18 @@ public class Ufo extends Enemy {
         this.dx = dx;
     }
 
-    public static int getWIDTH() {
-        return WIDTH;
-    }
 
-    public static int getHEIGHT() {
-        return HEIGHT;
-    }
 
     public int getCenterX()
     {
-        return getX()+getWIDTH()/2;
+        return getX() + WIDTH / 2;
     }
     public int getCenterY()
     {
-        return getY()+getHEIGHT()/2;
+        return getY() + HEIGHT / 2;
     }
     public double getRadius() {
-        return (Math.sqrt(Math.pow(getWIDTH() / 2, 2) + Math.pow(getHEIGHT() / 2, 2)));
+        return (Math.sqrt(Math.pow(WIDTH / 2, 2) + Math.pow(HEIGHT / 2, 2)));
     }
 
     public void move() {

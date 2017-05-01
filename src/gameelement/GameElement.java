@@ -4,6 +4,8 @@ package gameelement;
  * Created by arons on 2017. 05. 01..
  */
 public class GameElement {
+    public static final int MAXSREENWITH = 800;
+
     protected int x;
     protected int y;
 
