@@ -7,8 +7,8 @@ public class Bullet extends GameElement {
     private int bulletPow;
     private boolean isCraftBullet;
     private boolean destroyBullet;
-    private static final int WIDTH=15;
-    private static final int HEIGHT=15;
+    public static final int WIDTH = 15;
+    public static final int HEIGHT = 15;
 
     /**
      *
@@ -56,23 +56,16 @@ public class Bullet extends GameElement {
         this.destroyBullet = destroyBullet;
     }
 
-    public static int getWIDTH() {
-        return WIDTH;
-    }
-
-    public static int getHEIGHT() {
-        return HEIGHT;
-    }
 
     public int getCenterX()
     {
-        return getX()+getWIDTH()/2;
+        return getX() + WIDTH / 2;
     }
     public int getCenterY()
     {
-        return getY()+getHEIGHT()/2;
+        return getY() + HEIGHT / 2;
     }
     public double getRadius() {
-        return (Math.sqrt(Math.pow(getWIDTH() / 2, 2) + Math.pow(getHEIGHT() / 2, 2)));
+        return (Math.sqrt(Math.pow(WIDTH / 2, 2) + Math.pow(HEIGHT / 2, 2)));
     }
 }

@@ -23,7 +23,7 @@ public class Controller implements KeyListener {
         craft width: 72.0
         craft height: 71.29998779296875
      */
-    private static final int WINDOWBOTTOM = 800;
+    private static final int WINDOWBOTTOM = 900;
     private static final int WINDOWTOP = 0;
     private static final int BULLETOFFSET = 30;
     List<Craft> crafts = new ArrayList<>();
@@ -143,8 +143,10 @@ public class Controller implements KeyListener {
             gameView.drawCraft(craft.getX(), craft.getY());
 
             if (addBullet == true) {
-                //x+310, y+280: crat-bullet correction
-                bullets.add(new Bullet(craft.getX() + 310, craft.getY() + 280, true, craft.getBulletPower(), false));
+
+                //x+7, y+7: craft-bullet correction
+                bullets.add(new Bullet(craft.getX() + (Craft.WIDTH - Bullet.WIDTH) / 2, craft.getY() + Bullet.HEIGHT, true, 1, false));
+
             }
             craft.move();
             gameView.drawHp(craft.getHp());
@@ -194,8 +196,8 @@ public class Controller implements KeyListener {
             Iterator<Ufo> iter2 = ufos.iterator();
             while (iter2.hasNext()) {
                 Ufo ufo = iter2.next();
-                //x+120, y+95 : ufo-bullets corretction
-                bullets.add(new Bullet((int) ufo.getX() + 120, (int) ufo.getY() + 95, false, 1, false));
+                //x+, y+ : ufo-bullets corretction
+                bullets.add(new Bullet((int) ufo.getX() + (Ufo.WIDTH - Bullet.WIDTH) / 2, (int) ufo.getY() + Bullet.HEIGHT, false, 1, false));
             }
         }
         addUfoBullet = false;

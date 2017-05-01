@@ -3,13 +3,13 @@ package gameelement;
 public class Asteroid extends Enemy {
 
     private int dy;
-    private static int MAXSREENWITH = 600;
-    private static final int WIDTH=54;
-    private static final int HEIGHT=57;
+    private static int MAXSREENWITH = 800;
+    public static final int WIDTH = 53;
+    public static final int HEIGHT = 56;
 
     public Asteroid() {
-        x = (int) (Math.random() * MAXSREENWITH);
-        y = -270;
+        x = (int) (Math.random() * (MAXSREENWITH - WIDTH));
+        y = -60;
         dy = 10;
         hp = 1;
     }
@@ -22,24 +22,18 @@ public class Asteroid extends Enemy {
         this.dy = dy;
     }
 
-    public static int getWIDTH() {
-        return WIDTH;
-    }
 
-    public static int getHEIGHT() {
-        return HEIGHT;
-    }
 
     public int getCenterX()
     {
-        return getX()+getWIDTH()/2;
+        return getX() + WIDTH / 2;
     }
     public int getCenterY()
     {
-        return getY()+getHEIGHT()/2;
+        return getY() + HEIGHT / 2;
     }
     public double getRadius() {
-        return (Math.sqrt(Math.pow(getWIDTH() / 2, 2) + Math.pow(getHEIGHT() / 2, 2)));
+        return (Math.sqrt(Math.pow(WIDTH / 2, 2) + Math.pow(HEIGHT / 2, 2)));
     }
 
     public void move() {

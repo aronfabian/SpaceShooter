@@ -4,14 +4,13 @@ package gameelement;
  * Created by arons on 2017. 04. 29..
  */
 public class Craft extends GameElement {
-    private static final int LEFTSIDE = -320;
-    private static final int RIGHTSIDE = 400;
     private int dx;
     private int score;
     private int hp;
-    private int bulletPower;
-    private static final int WIDTH=72;
-    private static final int HEIGHT=72;
+
+    public static final int WIDTH = 72;
+    public static final int HEIGHT = 71;
+
 
     public Craft(int x, int y, int score, int hp,int bulletPower) {
         this.x = x;
@@ -22,8 +21,8 @@ public class Craft extends GameElement {
     }
 
     public Craft() {
-        x = 50;
-        y = 450;
+        x = MAXSREENWITH / 2;
+        y = 770;
         score = 0;
         hp = 3;
         bulletPower=1;
@@ -53,13 +52,7 @@ public class Craft extends GameElement {
         this.hp = hp;
     }
 
-    public static int getWIDTH() {
-        return WIDTH;
-    }
 
-    public static int getHEIGHT() {
-        return HEIGHT;
-    }
 
     public int getBulletPower() {
         return bulletPower;
@@ -71,21 +64,21 @@ public class Craft extends GameElement {
 
     public int getCenterX()
     {
-        return getX()+getWIDTH()/2;
+        return getX() + WIDTH / 2;
     }
     public int getCenterY()
     {
-        return getY()+getHEIGHT()/2;
+        return getY() + HEIGHT / 2;
     }
     public double getRadius() {
-        return (Math.sqrt(Math.pow(getWIDTH() / 2, 2) + Math.pow(getHEIGHT() / 2, 2)));
+        return (Math.sqrt(Math.pow(WIDTH / 2, 2) + Math.pow(HEIGHT / 2, 2)));
     }
 
     public void move() {
-        if (x == LEFTSIDE && dx <= 0) {
+        if (x < 0 && dx <= 0) {
             return;
         }
-        if (x == RIGHTSIDE && dx >= 0) {
+        if (x > MAXSREENWITH - WIDTH && dx >= 0) {
             return;
         }
         x += dx;

@@ -44,6 +44,7 @@ public class GameView {
     private Rectangle hpRect;
     private Label hpLabel;
     private Label scoreLabel;
+    private Label craftCoord;
 
     private List<ImageView> bullets = new ArrayList<ImageView>();
     private List<ImageView> ufos = new ArrayList<ImageView>();
@@ -56,8 +57,11 @@ public class GameView {
     }
 
     public void drawCraft(int x, int y) {
-        craft.setX(x);
-        craft.setY(y);
+        craft.setLayoutX(x);
+        craft.setLayoutY(y);
+        craftCoord.setText(x + ", " + y);
+        craftCoord.setLayoutY(y);
+        craftCoord.setLayoutX(x);
     }
 
     public void drawBullets(List<Bullet> bulletList) {
@@ -66,10 +70,8 @@ public class GameView {
 
         for (Bullet b : bulletList) {
             ImageView bullet1 = new ImageView(new Image(BULLET));
-            bullet1.setX(b.getX()); //+310
-            bullet1.setY(b.getY()); // +280
-            bullet1.setScaleY(0.15);
-            bullet1.setScaleX(0.15);
+            bullet1.setX(b.getX());
+            bullet1.setY(b.getY());
             bullets.add(bullet1);
             root.getChildren().addAll(bullet1);
         }
@@ -81,8 +83,6 @@ public class GameView {
 
         for (Ufo u : ufoList) {
             ImageView ufo = new ImageView(new Image(UFO));
-            ufo.setScaleX(0.3);
-            ufo.setScaleY(0.3);
             ufo.setX(u.getX());
             ufo.setY(u.getY());
             ufos.add(ufo);
@@ -97,12 +97,13 @@ public class GameView {
 
         for (Asteroid a : asteroidList) {
             ImageView asteroid = new ImageView(new Image(ASTEROID));
-            asteroid.setScaleX(0.3);
-            asteroid.setScaleY(0.3);
             asteroid.setX(a.getX());
             asteroid.setY(a.getY());
             asteroids.add(asteroid);
-            root.getChildren().addAll(asteroid);
+            Label label = new Label(a.getX() + ", " + a.getY());
+            label.setLayoutX(a.getX());
+            label.setLayoutY(a.getY());
+            root.getChildren().addAll(asteroid, label);
         }
 
     }
@@ -142,8 +143,6 @@ public class GameView {
         background = new ImageView(new Image(BACKGORUND));
 
         craft = new ImageView(new Image(CRAFT));
-        craft.setScaleX(0.1);
-        craft.setScaleY(0.1);
 
         hpRect = new Rectangle(100, 20);
         hpRect.setY(10);
@@ -165,19 +164,22 @@ public class GameView {
         scoreLabel.setEffect(new GaussianBlur(1));
 
         weaponGift = new ImageView(new Image(WEAPONGIFT));
-        weaponGift.setFitWidth(50);
-        weaponGift.setFitHeight(50);
+
         weaponGift.setX(-100);
         weaponGift.setY(-100);
 
         hpGift = new ImageView(new Image(HPGIFT));
-        hpGift.setFitHeight(50);
-        hpGift.setFitWidth(50);
         hpGift.setY(-100);
         hpGift.setX(-100);
 
+        craftCoord = new Label();
+        craftCoord.setText("");
+        craftCoord.setTextFill(Color.WHITE);
+        craftCoord.setFont(Font.font("", FontWeight.BOLD, 20));
+        craftCoord.setEffect(new GaussianBlur(1));
 
-        root.getChildren().addAll(background, craft, hpRect, hpLabel, scoreLabel, weaponGift, hpGift);
+
+        root.getChildren().addAll(background, craft, hpRect, hpLabel, scoreLabel, weaponGift, hpGift, craftCoord);
         return root;
     }
 

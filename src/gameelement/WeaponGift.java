@@ -5,7 +5,7 @@ package gameelement;
  */
 public class WeaponGift extends Gift {
     private int weaponPow;
-
+    public static final int HEIGHT = 55;
 
     public WeaponGift() {
         super();
