@@ -13,16 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Controller implements KeyListener {
-    /*
-        ufo width: 104.39999389648438
-        ufo height: 63.0
-        bullet width: 15.0
-        bullet height: 14.699951171875
-        asteroid width: 53.70001220703125
-        asteroid height: 57.0
-        craft width: 72.0
-        craft height: 71.29998779296875
-     */
+
     private static final int WINDOWBOTTOM = 900;
     private static final int WINDOWTOP = 0;
     private static final int BULLETOFFSET = 30;
@@ -66,29 +57,29 @@ public class Controller implements KeyListener {
         timeline.play();
 
         //4 másodpercenként megjelenik egy ufo (időzítő)
-        Timeline timeline2 = new Timeline(new KeyFrame(Duration.seconds(4), ev -> {
+        Timeline ufoTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> {
             ufos.add(new Ufo());
         }));
-        timeline2.setCycleCount(Animation.INDEFINITE);
-        timeline2.play();
+        ufoTimer.setCycleCount(Animation.INDEFINITE);
+        ufoTimer.play();
 
         //2 másodpercenként megjelenik egy aszteroida (időzítő)
-        Timeline timeline3 = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
+        Timeline asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
             asteroids.add(new Asteroid());
         }));
-        timeline3.setCycleCount(Animation.INDEFINITE);
-        timeline3.play();
+        asteroidTimer.setCycleCount(Animation.INDEFINITE);
+        asteroidTimer.play();
 
-        //2 másodpercenként lőnek az asztroidák (időzítő)
-        Timeline timeline4 = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
+        //2 másodpercenként lőnek az ufók (időzítő)
+        Timeline ufoShootTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
             addUfoBullet = true;
         }));
-        timeline4.setCycleCount(Animation.INDEFINITE);
-        timeline4.play();
+        ufoShootTimer.setCycleCount(Animation.INDEFINITE);
+        ufoShootTimer.play();
 
 
         //15 másodpercenként megjelenik egy ajándék
-        Timeline timeline5 = new Timeline(new KeyFrame(Duration.seconds(15), ev -> {
+        Timeline giftTimer = new Timeline(new KeyFrame(Duration.seconds(15), ev -> {
             if ((Math.random() > 0.5)) {
                 gifts.add(new HpGift());
             } else {
@@ -96,8 +87,8 @@ public class Controller implements KeyListener {
             }
 
         }));
-        timeline5.setCycleCount(Animation.INDEFINITE);
-        timeline5.play();
+        giftTimer.setCycleCount(Animation.INDEFINITE);
+        giftTimer.play();
 
     }
 
@@ -257,13 +248,8 @@ public class Controller implements KeyListener {
         //move gifts
         for (Gift gift : gifts) {
             gift.move();
-            if (gift instanceof WeaponGift) {
-                gameView.drawWeaponGift(gift.getX(), gift.getY());
-            } else {
-                gameView.drawHpGift(gift.getX(), gift.getY());
-            }
         }
-
+        gameView.drawGift(gifts);
 
     }
     //outOfFrame functions
@@ -357,10 +343,10 @@ public class Controller implements KeyListener {
                         craft.setHp(craft.getHp() + 1);
 
                     } else {
-                        WeaponGift weapongift=(WeaponGift)gift;
+                        WeaponGift weapongift = (WeaponGift) gift;
                         craft.setBulletPower(craft.getBulletPower() + weapongift.getWeaponPow());
                     }
-                    gift.setExist(true);
+                    gift.setExist(false);
                 }
             }
 

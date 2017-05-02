@@ -1,8 +1,6 @@
 package gui;
 
-import gameelement.Asteroid;
-import gameelement.Bullet;
-import gameelement.Ufo;
+import gameelement.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -39,8 +37,6 @@ public class GameView {
     private Pane root;
     private ImageView background;
     private ImageView craft;
-    private ImageView hpGift;
-    private ImageView weaponGift;
     private Rectangle hpRect;
     private Label hpLabel;
     private Label scoreLabel;
@@ -49,7 +45,7 @@ public class GameView {
     private List<ImageView> bullets = new ArrayList<ImageView>();
     private List<ImageView> ufos = new ArrayList<ImageView>();
     private List<ImageView> asteroids = new ArrayList<ImageView>();
-
+    private List<ImageView> gifts = new ArrayList<ImageView>();
     private KeyListener keyListener;
 
     public void setKeyListener(KeyListener keyListener) {
@@ -121,14 +117,22 @@ public class GameView {
 
     }
 
-    public void drawWeaponGift(int x, int y) {
-        weaponGift.setX(x);
-        weaponGift.setY(y);
-    }
+    public void drawGift(List<Gift> giftList) {
+        root.getChildren().removeAll(gifts);
+        gifts.clear();
 
-    public void drawHpGift(int x, int y) {
-        hpGift.setX(x);
-        hpGift.setY(y);
+        for (Gift g : giftList) {
+            ImageView gift;
+            if (g instanceof WeaponGift) {
+                gift = new ImageView(new Image(WEAPONGIFT));
+            } else {
+                gift = new ImageView(new Image(HPGIFT));
+            }
+            gift.setX(g.getX());
+            gift.setY(g.getY());
+            gifts.add(gift);
+            root.getChildren().addAll(gift);
+        }
     }
 
     private ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
@@ -160,14 +164,6 @@ public class GameView {
         scoreLabel.setFont(Font.font("", FontWeight.BOLD, 20));
         scoreLabel.setEffect(new GaussianBlur(1));
 
-        weaponGift = new ImageView(new Image(WEAPONGIFT));
-
-        weaponGift.setX(-100);
-        weaponGift.setY(-100);
-
-        hpGift = new ImageView(new Image(HPGIFT));
-        hpGift.setY(-100);
-        hpGift.setX(-100);
 
         craftCoord = new Label();
         craftCoord.setText("");
@@ -176,7 +172,7 @@ public class GameView {
         craftCoord.setEffect(new GaussianBlur(1));
 
 
-        root.getChildren().addAll(background, craft, hpRect, hpLabel, scoreLabel, weaponGift, hpGift, craftCoord);
+        root.getChildren().addAll(background, craft, hpRect, hpLabel, scoreLabel, craftCoord);
         return root;
     }
 
