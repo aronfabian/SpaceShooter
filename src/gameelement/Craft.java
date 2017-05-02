@@ -5,7 +5,6 @@ package gameelement;
  */
 public class Craft extends GameElement {
 
-    private int bulletPower;
     private int dx;
     private int score;
     private int hp;

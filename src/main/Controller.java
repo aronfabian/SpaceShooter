@@ -344,7 +344,7 @@ public class Controller implements KeyListener {
                         WeaponGift weapongift=(WeaponGift)gift;
                         craft.setBulletPower(craft.getBulletPower() + weapongift.getWeaponPow());
                     }
-                    gift.setExist(true);
+                    gift.setExist(false);
                 }
             }
 
