@@ -7,7 +7,7 @@ public class Ufo extends Enemy {
 
     private int dx;
 
-    private static int MOVEPERIOD = 30;
+    private static final int MOVEPERIOD = 30;
     public static final int WIDTH = 104;
     public static final int HEIGHT = 63;
     private int periodCounter;

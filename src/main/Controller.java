@@ -17,15 +17,15 @@ public class Controller implements KeyListener {
     private static final int WINDOWBOTTOM = 900;
     private static final int WINDOWTOP = 0;
     private static final int BULLETOFFSET = 30;
-    List<Craft> crafts = new ArrayList<>();
-    List<Bullet> bullets = new ArrayList<>();
-    List<Ufo> ufos = new ArrayList<>();
-    List<Asteroid> asteroids = new ArrayList<>();
-    List<Gift> gifts = new ArrayList<>();
+    private final List<Craft> crafts = new ArrayList<>();
+    private final List<Bullet> bullets = new ArrayList<>();
+    private final List<Ufo> ufos = new ArrayList<>();
+    private final List<Asteroid> asteroids = new ArrayList<>();
+    private final List<Gift> gifts = new ArrayList<>();
 
-    Stage ps;
-    boolean addBullet = false;
-    boolean addUfoBullet = false;
+    private final Stage ps;
+    private boolean addBullet = false;
+    private boolean addUfoBullet = false;
     private boolean rightPressed;
     private boolean leftPressed;
 
@@ -57,23 +57,17 @@ public class Controller implements KeyListener {
         timeline.play();
 
         //4 másodpercenként megjelenik egy ufo (időzítő)
-        Timeline ufoTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> {
-            ufos.add(new Ufo());
-        }));
+        Timeline ufoTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> ufos.add(new Ufo())));
         ufoTimer.setCycleCount(Animation.INDEFINITE);
         ufoTimer.play();
 
         //2 másodpercenként megjelenik egy aszteroida (időzítő)
-        Timeline asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
-            asteroids.add(new Asteroid());
-        }));
+        Timeline asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> asteroids.add(new Asteroid())));
         asteroidTimer.setCycleCount(Animation.INDEFINITE);
         asteroidTimer.play();
 
         //2 másodpercenként lőnek az ufók (időzítő)
-        Timeline ufoShootTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
-            addUfoBullet = true;
-        }));
+        Timeline ufoShootTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> addUfoBullet = true));
         ufoShootTimer.setCycleCount(Animation.INDEFINITE);
         ufoShootTimer.play();
 
@@ -117,7 +111,7 @@ public class Controller implements KeyListener {
     @Override
     public void rightReleased() {
         rightPressed = false;
-        if (leftPressed == true) {
+        if (leftPressed) {
             crafts.get(0).setDx(-10);
         } else {
             crafts.get(0).setDx(0);
@@ -128,7 +122,7 @@ public class Controller implements KeyListener {
     public void leftReleased() {
 
         leftPressed = false;
-        if (rightPressed == true) {
+        if (rightPressed) {
             crafts.get(0).setDx(10);
         } else {
             crafts.get(0).setDx(0);
@@ -149,7 +143,7 @@ public class Controller implements KeyListener {
         for (Craft craft : crafts) {
             gameView.drawCraft(craft.getX(), craft.getY());
 
-            if (addBullet == true) {
+            if (addBullet) {
 
                 //x+7, y+7: craft-bullet correction
                 bullets.add(new Bullet(craft.getX() + (Craft.WIDTH - Bullet.WIDTH) / 2, craft.getY() + Bullet.HEIGHT, true, 1, false));
@@ -199,12 +193,12 @@ public class Controller implements KeyListener {
             ufo.move();
         }
 
-        if (addUfoBullet == true) {
+        if (addUfoBullet) {
             Iterator<Ufo> iter2 = ufos.iterator();
             while (iter2.hasNext()) {
                 Ufo ufo = iter2.next();
                 //x+, y+ : ufo-bullets corretction
-                bullets.add(new Bullet((int) ufo.getX() + (Ufo.WIDTH - Bullet.WIDTH) / 2, (int) ufo.getY() + Bullet.HEIGHT, false, 1, false));
+                bullets.add(new Bullet(ufo.getX() + (Ufo.WIDTH - Bullet.WIDTH) / 2, ufo.getY() + Bullet.HEIGHT, false, 1, false));
             }
         }
         addUfoBullet = false;
@@ -220,7 +214,7 @@ public class Controller implements KeyListener {
         Iterator<Bullet> iter = bullets.iterator();
         while (iter.hasNext()) {
             Bullet bullet = iter.next();
-            if (bullet.getDestroyBullet() == true) {
+            if (bullet.getDestroyBullet()) {
                 iter.remove();
             }
 
@@ -240,7 +234,7 @@ public class Controller implements KeyListener {
         Iterator<Gift> iter = gifts.iterator();
         while (iter.hasNext()) {
             Gift gift = iter.next();
-            if (gift.isExist() == false) {
+            if (!gift.isExist()) {
                 iter.remove();
             }
         }
@@ -292,7 +286,7 @@ public class Controller implements KeyListener {
     //collision functions
     private void elementCollision() {
         for (Bullet bullet : bullets) {
-            if (bullet.getIsCraftBullet() == true)  //if bullet was shot by Craft
+            if (bullet.getIsCraftBullet())  //if bullet was shot by Craft
             {
                 for (Ufo ufo : ufos) {
                     if (Math.sqrt(Math.pow(bullet.getCenterX() - ufo.getCenterX(), 2) + Math.pow(bullet.getCenterY() - ufo.getCenterY(), 2)) < ufo.getRadius() + bullet.getRadius())

@@ -25,7 +25,7 @@ public class Bullet extends GameElement {
     }
 
     public void move() {
-        if (isCraftBullet == true) {
+        if (isCraftBullet) {
             y -= 20;
         } else {
             y += 20;

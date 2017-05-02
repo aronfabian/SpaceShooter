@@ -36,7 +36,7 @@ public class MenuView {
     protected VBox menuBox;
     protected int currentItem = 0;
 
-    protected ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
+    protected final ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
     protected static Stage ps;
 
     public MenuView(Stage ps) {
@@ -84,8 +84,9 @@ public class MenuView {
 
 
     private static class MenuItem extends HBox {
-        private SelectCircle c1 = new SelectCircle(), c2 = new SelectCircle();
-        private Text text;
+        private final SelectCircle c1 = new SelectCircle();
+        private final SelectCircle c2 = new SelectCircle();
+        private final Text text;
         private Runnable script;
 
         public MenuItem(String name) {
@@ -170,9 +171,7 @@ public class MenuView {
 
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.setOnCloseRequest(event -> {
-            bgThread.shutdownNow();
-        });
+        primaryStage.setOnCloseRequest(event -> bgThread.shutdownNow());
         primaryStage.show();
     }
 

@@ -42,10 +42,10 @@ public class GameView {
     private Label scoreLabel;
     private Label craftCoord;
 
-    private List<ImageView> bullets = new ArrayList<ImageView>();
-    private List<ImageView> ufos = new ArrayList<ImageView>();
-    private List<ImageView> asteroids = new ArrayList<ImageView>();
-    private List<ImageView> gifts = new ArrayList<ImageView>();
+    private final List<ImageView> bullets = new ArrayList<>();
+    private final List<ImageView> ufos = new ArrayList<>();
+    private final List<ImageView> asteroids = new ArrayList<>();
+    private final List<ImageView> gifts = new ArrayList<>();
     private KeyListener keyListener;
 
     public void setKeyListener(KeyListener keyListener) {
@@ -135,7 +135,7 @@ public class GameView {
         }
     }
 
-    private ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
 
     private Parent createContent() {
         root = new Pane();
