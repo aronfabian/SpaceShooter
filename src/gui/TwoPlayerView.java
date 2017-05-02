@@ -162,9 +162,7 @@ public class TwoPlayerView {
 
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.setOnCloseRequest(event -> {
-            bgThread.shutdownNow();
-        });
+        primaryStage.setOnCloseRequest(event -> bgThread.shutdownNow());
         primaryStage.show();
     }
 }
