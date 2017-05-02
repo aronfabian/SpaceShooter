@@ -8,10 +8,9 @@ package gameelement;
 public class Gift extends GameElement {
     protected int dy;
 
-    private static int MAXSREENWITH = 400;
     private boolean isExist;
-    public static final int WIDTH = 30;
-    public static final int HEIGHT = 30;
+    public static final int WIDTH = 50;
+    public static final int HEIGHT = 50;
 
 
 

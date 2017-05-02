@@ -3,7 +3,7 @@ package gameelement;
 public class Asteroid extends Enemy {
 
     private int dy;
-    private static int MAXSREENWITH = 800;
+
     public static final int WIDTH = 53;
     public static final int HEIGHT = 56;
 

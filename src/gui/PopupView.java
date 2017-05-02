@@ -35,14 +35,11 @@ public class PopupView {
 
         Button btn1 = new Button();
         btn1.setText("Enter");
-        btn1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                popup.hide();
+        btn1.setOnAction(event -> {
+            popup.hide();
 
-                Controller controller = new Controller(ps);
-                controller.start();
-            }
+            Controller controller = new Controller(ps);
+            controller.start();
         });
 
         HBox layout = new HBox();
