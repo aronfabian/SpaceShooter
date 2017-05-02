@@ -35,6 +35,8 @@ public class Controller implements KeyListener {
     Stage ps;
     boolean addBullet = false;
     boolean addUfoBullet = false;
+    private boolean rightPressed;
+    private boolean leftPressed;
 
     public Controller(Stage ps) {
         this.ps = ps;
@@ -111,22 +113,36 @@ public class Controller implements KeyListener {
 
     @Override
     public void rightPressed() {
+        rightPressed = true;
         crafts.get(0).setDx(10);
     }
 
     @Override
     public void leftPressed() {
+        leftPressed = true;
         crafts.get(0).setDx(-10);
     }
 
     @Override
     public void rightReleased() {
-        crafts.get(0).setDx(0);
+        rightPressed = false;
+        if (leftPressed == true) {
+            crafts.get(0).setDx(-10);
+        } else {
+            crafts.get(0).setDx(0);
+        }
     }
 
     @Override
     public void leftReleased() {
-        crafts.get(0).setDx(0);
+
+        leftPressed = false;
+        if (rightPressed == true) {
+            crafts.get(0).setDx(10);
+        } else {
+            crafts.get(0).setDx(0);
+        }
+
     }
 
 
