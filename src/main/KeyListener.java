@@ -16,6 +16,8 @@ public interface KeyListener {
 
     void leftReleased();
 
+    void highScoreName(String name);
+
 
     void exit();
 }

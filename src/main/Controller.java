@@ -7,10 +7,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class Controller implements KeyListener {
 
@@ -29,51 +29,59 @@ public class Controller implements KeyListener {
     private boolean rightPressed;
     private boolean leftPressed;
 
+    private Timeline timeline;
+    private Timeline ufoTimer;
+    private Timeline asteroidTimer;
+    private Timeline ufoShootTimer;
+    private Timeline giftTimer;
+    private GameView gameView;
+
     public Controller(Stage ps) {
         this.ps = ps;
     }
 
     public void start() {
-        GameView gameView = new GameView();
+        gameView = new GameView(ps);
         gameView.setKeyListener(this);
 
         crafts.add(new Craft());
 
         try {
-            gameView.build(ps);
+            gameView.build();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(80), ev -> {
+        timeline = new Timeline(new KeyFrame(Duration.millis(80), ev -> {
+            gameOverCheck();
             elementCollision();
-            updateCraft(gameView);
-            updateBullet(gameView);
-            updateAsteroid(gameView);
-            updateUfo(gameView);
-            updateGift(gameView);
+            updateCraft();
+            updateBullet();
+            updateAsteroid();
+            updateUfo();
+            updateGift();
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
         //4 másodpercenként megjelenik egy ufo (időzítő)
-        Timeline ufoTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> ufos.add(new Ufo())));
+        ufoTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> ufos.add(new Ufo())));
         ufoTimer.setCycleCount(Animation.INDEFINITE);
         ufoTimer.play();
 
         //2 másodpercenként megjelenik egy aszteroida (időzítő)
-        Timeline asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> asteroids.add(new Asteroid())));
+        asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> asteroids.add(new Asteroid())));
         asteroidTimer.setCycleCount(Animation.INDEFINITE);
         asteroidTimer.play();
 
         //2 másodpercenként lőnek az ufók (időzítő)
-        Timeline ufoShootTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> addUfoBullet = true));
+        ufoShootTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> addUfoBullet = true));
         ufoShootTimer.setCycleCount(Animation.INDEFINITE);
         ufoShootTimer.play();
 
 
         //15 másodpercenként megjelenik egy ajándék
-        Timeline giftTimer = new Timeline(new KeyFrame(Duration.seconds(15), ev -> {
+        giftTimer = new Timeline(new KeyFrame(Duration.seconds(15), ev -> {
             if ((Math.random() > 0.5)) {
                 gifts.add(new HpGift());
             } else {
@@ -84,6 +92,97 @@ public class Controller implements KeyListener {
         giftTimer.setCycleCount(Animation.INDEFINITE);
         giftTimer.play();
 
+    }
+
+    private void gameOverCheck() {
+        for (Craft craft : crafts) {
+            if (craft.getHp() <= 0) {
+                // stop timers
+                timeline.stop();
+                ufoTimer.stop();
+                asteroidTimer.stop();
+                ufoShootTimer.stop();
+                giftTimer.stop();
+                // draw game over and get player name
+                gameView.gameOver();
+            }
+        }
+    }
+
+    @Override
+    public void highScoreName(String name) {
+        System.out.println(name);
+        Properties prop = new Properties();
+        OutputStream output = null;
+        InputStream input = null;
+        List<Pair<String, Integer>> highScores = new ArrayList<>();
+
+        try {
+            input = new FileInputStream("scores.properties");
+            String playerName;
+            String score;
+            int scoreInt;
+            // load a properties file
+            prop.load(input);
+            for (int i = 1; i <= 10; i++) {
+                playerName = prop.getProperty(i + "_name");
+                score = prop.getProperty(i + "_score");
+                if (score.length() == 0) {
+                    scoreInt = 0;
+                } else {
+                    scoreInt = Integer.parseInt(score);
+                }
+                if (!(playerName.length() == 0)) {
+                    highScores.add(i - 1, new Pair<>(playerName, scoreInt));
+                }
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        highScores.add(new Pair<>(name, crafts.get(0).getScore()));
+        highScores.sort(new Comparator<Pair<String, Integer>>() {
+            @Override
+            public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+
+
+        try {
+
+            output = new FileOutputStream("scores.properties");
+
+            // set the properties value
+            for (int i = 0; (i < highScores.size()) && (i < 10); i++) {
+                prop.setProperty((i + 1) + "_name", highScores.get(i).getKey());
+                prop.setProperty((i + 1) + "_score", highScores.get(i).getValue().toString());
+            }
+
+
+            // save properties to project root folder
+            prop.store(output, null);
+
+        } catch (IOException io) {
+            io.printStackTrace();
+        } finally {
+            if (output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
     }
 
     @Override
@@ -139,7 +238,7 @@ public class Controller implements KeyListener {
     //functions
 
 
-    private void updateCraft(GameView gameView) {
+    private void updateCraft() {
         for (Craft craft : crafts) {
             gameView.drawCraft(craft.getX(), craft.getY());
 
@@ -157,7 +256,7 @@ public class Controller implements KeyListener {
     }
 
 
-    private void updateAsteroid(GameView gameView) {
+    private void updateAsteroid() {
 
         AsteroidOutOfFrame();
         //remove asteroids
@@ -176,7 +275,7 @@ public class Controller implements KeyListener {
         gameView.drawAsteroids(asteroids);
     }
 
-    private void updateUfo(GameView gameView) {
+    private void updateUfo() {
 
         UfoOutOfFrame();
         //remove asteroids
@@ -206,7 +305,7 @@ public class Controller implements KeyListener {
         gameView.drawUfos(ufos);
     }
 
-    private void updateBullet(GameView gameView) {
+    private void updateBullet() {
 
         bulletOutOfFrame();
 
@@ -227,7 +326,7 @@ public class Controller implements KeyListener {
         gameView.drawBullets(bullets);
     }
 
-    private void updateGift(GameView gameView) {
+    private void updateGift() {
         GiftOutOfFrame();
 
         //remove gifts

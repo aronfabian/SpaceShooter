@@ -4,6 +4,7 @@ import gameelement.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,6 +27,8 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class GameView {
 
+    protected static final Font FONT = Font.font("", FontWeight.BOLD, 60);
+
     private static final String UFO = "gui/images/ufo.png";
     private static final String BULLET = "gui/images/bullet.png";
     private static final String ASTEROID = "gui/images/ast.png";
@@ -34,6 +37,7 @@ public class GameView {
     private static final String WEAPONGIFT = "gui/images/weapon.png";
     private static final String HPGIFT = "gui/images/heal.png";
 
+    private Stage ps;
     private Pane root;
     private ImageView background;
     private ImageView craft;
@@ -41,12 +45,18 @@ public class GameView {
     private Label hpLabel;
     private Label scoreLabel;
     private Label craftCoord;
+    private Label overLabel;
+    private TextField nameField;
 
     private final List<ImageView> bullets = new ArrayList<>();
     private final List<ImageView> ufos = new ArrayList<>();
     private final List<ImageView> asteroids = new ArrayList<>();
     private final List<ImageView> gifts = new ArrayList<>();
     private KeyListener keyListener;
+
+    public GameView(Stage ps) {
+        this.ps = ps;
+    }
 
     public void setKeyListener(KeyListener keyListener) {
         this.keyListener = keyListener;
@@ -65,11 +75,11 @@ public class GameView {
         bullets.clear();
 
         for (Bullet b : bulletList) {
-            ImageView bullet1 = new ImageView(new Image(BULLET));
-            bullet1.setX(b.getX());
-            bullet1.setY(b.getY());
-            bullets.add(bullet1);
-            root.getChildren().addAll(bullet1);
+            ImageView bullet = new ImageView(new Image(BULLET));
+            bullet.setX(b.getX());
+            bullet.setY(b.getY());
+            bullets.add(bullet);
+            root.getChildren().addAll(bullet);
         }
     }
 
@@ -135,6 +145,32 @@ public class GameView {
         }
     }
 
+    public void gameOver() {
+        overLabel = new Label("GAME OVER");
+        overLabel.setFont(FONT);
+        overLabel.setTextFill(Color.WHITE);
+        overLabel.setEffect(new GaussianBlur(2));
+        overLabel.setLayoutY(200);
+        overLabel.setLayoutX(230);
+
+        nameField = new TextField("Give your name, please!");
+        nameField.setLayoutX(270);
+        nameField.setLayoutY(300);
+        nameField.setFont(Font.font("", FontWeight.BOLD, 20));
+        nameField.setEffect(new GaussianBlur(1));
+        nameField.setOnAction(event -> {
+            keyListener.highScoreName(nameField.getText());
+            MenuView menuView = new MenuView(ps);
+            try {
+                menuView.build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        root.getChildren().addAll(overLabel, nameField);
+    }
+
     private final ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
 
     private Parent createContent() {
@@ -164,20 +200,18 @@ public class GameView {
         scoreLabel.setFont(Font.font("", FontWeight.BOLD, 20));
         scoreLabel.setEffect(new GaussianBlur(1));
 
-
         craftCoord = new Label();
         craftCoord.setText("");
         craftCoord.setTextFill(Color.WHITE);
         craftCoord.setFont(Font.font("", FontWeight.BOLD, 20));
         craftCoord.setEffect(new GaussianBlur(1));
 
-
         root.getChildren().addAll(background, craft, hpRect, hpLabel, scoreLabel, craftCoord);
         return root;
     }
 
 
-    public void build(Stage primaryStage) throws Exception {
+    public void build() throws Exception {
         Scene scene = new Scene(createContent());
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.UP) {
@@ -219,12 +253,12 @@ public class GameView {
             }
         });
 
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.setOnCloseRequest(event -> {
+        ps.setScene(scene);
+        ps.setResizable(false);
+        ps.setOnCloseRequest(event -> {
             bgThread.shutdownNow();
             keyListener.exit();
         });
-        primaryStage.show();
+        ps.show();
     }
 }

@@ -1,77 +1,123 @@
 package gui;
 
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
-
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 import javafx.scene.effect.GaussianBlur;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.Controller;
+import javafx.util.Pair;
 
-public class MenuView {
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+/**
+ * Created by arons on 2017. 05. 02..
+ */
+public class HighScoreView {
 
     protected static final Font FONTABOUT = Font.font("", FontWeight.MEDIUM, 16);
-    protected static final Font FONT = Font.font("", FontWeight.BOLD, 30);
+    protected static final Font FONT = Font.font("", FontWeight.BOLD, 25);
 
     protected VBox menuBox;
     protected int currentItem = 0;
 
     protected final ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
     protected static Stage ps;
+    private Text highScoreText;
 
-    public MenuView(Stage ps) {
+    private List<Pair<String, Integer>> highScores = new ArrayList<>();
+
+    {
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+
+            input = new FileInputStream("scores.properties");
+            String name;
+            String score;
+            int scoreInt;
+            // load a properties file
+            prop.load(input);
+            for (int i = 1; i <= 10; i++) {
+                name = prop.getProperty(i + "_name");
+                score = prop.getProperty(i + "_score");
+                if (score.length() == 0) {
+                    scoreInt = 0;
+                } else {
+                    scoreInt = Integer.parseInt(score);
+                }
+                if (!(name.length() == 0)) {
+                    highScores.add(i - 1, new Pair<>(name, scoreInt));
+                }
+
+            }
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public HighScoreView(Stage ps) {
         this.ps = ps;
     }
 
-    protected Parent createContent() {
+    private Parent createContent() {
         Pane root = new Pane();
         root.setPrefSize(800, 900);
 
         Image img = new Image("gui/images/space_bg.jpg");
         ImageView imgView = new ImageView(img);
 
-        MenuItem itemExit = new MenuItem("EXIT");
-        itemExit.setOnActivate(() -> System.exit(0));
+        highScoreText = new Text();
+        highScoreText.setFont(FONT);
+        highScoreText.setEffect(new GaussianBlur(2));
+        highScoreText.setFill(Color.WHITE);
+        StringBuilder sb = new StringBuilder();
+        for (Pair<String, Integer> pair : highScores) {
+            sb.append(pair.getKey() + ": " + pair.getValue() + "\n");
+        }
+        highScoreText.setText(sb.toString());
+        highScoreText.setLayoutX(300);
+        highScoreText.setLayoutY(100);
 
         menuBox = new VBox(10,
-                new MenuItem("ONE PLAYER"),
-                new MenuItem("TWO PLAYER"),
-                new MenuItem("HIGH SCORES"),
-                itemExit);
+                new MenuItem("BACK"));
         menuBox.setAlignment(Pos.TOP_CENTER);
         menuBox.setTranslateX(300);
-        menuBox.setTranslateY(200);
+        menuBox.setTranslateY(600);
 
-        Text about = new Text("Beágyazott szoftvertechnológia HF\nCreated by: \n -Gyenes Zoltán \n -Nasli Alex \n -Fábián Áron");
-        about.setTranslateX(20);
-        about.setTranslateY(750);
-        about.setFill(Color.WHITE);
-        about.setFont(FONTABOUT);
-        about.setOpacity(0.2);
 
         getMenuItem(0).setActive(true);
 
-        root.getChildren().addAll(imgView, menuBox, about);
+        root.getChildren().addAll(imgView, menuBox, highScoreText);
         return root;
     }
 
@@ -99,23 +145,11 @@ public class MenuView {
             setActive(false);
             setOnActivate(() -> {
                 System.out.println(name + " activated");
-                switch (name){
-                    case "ONE PLAYER":
-                        Controller controller = new Controller(ps);
-                        controller.start();
-                        break;
-                    case "TWO PLAYER":
-                        TwoPlayerView twoPlayerView = new TwoPlayerView(ps);
+                switch (name) {
+                    case "BACK":
+                        MenuView menuView = new MenuView(ps);
                         try {
-                            twoPlayerView.build(ps);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "HIGH SCORES":
-                        HighScoreView highScoreView = new HighScoreView(ps);
-                        try {
-                            highScoreView.build(ps);
+                            menuView.build();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -150,7 +184,7 @@ public class MenuView {
         }
     }
 
-    public void build() throws Exception {
+    public void build(Stage primaryStage) throws Exception {
         Scene scene = new Scene(createContent());
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.UP) {
@@ -172,11 +206,9 @@ public class MenuView {
             }
         });
 
-        ps.setScene(scene);
-        ps.setResizable(false);
-        ps.setOnCloseRequest(event -> bgThread.shutdownNow());
-        ps.show();
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(event -> bgThread.shutdownNow());
+        primaryStage.show();
     }
-
-
 }
