@@ -149,7 +149,7 @@ public class HighScoreView {
                     case "BACK":
                         MenuView menuView = new MenuView(ps);
                         try {
-                            menuView.build(ps);
+                            menuView.build();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

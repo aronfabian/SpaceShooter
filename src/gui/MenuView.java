@@ -99,7 +99,6 @@ public class MenuView {
             setActive(false);
             setOnActivate(() -> {
                 System.out.println(name + " activated");
-                GameView gameView = new GameView();
                 switch (name){
                     case "ONE PLAYER":
                         Controller controller = new Controller(ps);
@@ -151,7 +150,7 @@ public class MenuView {
         }
     }
 
-    public void build(Stage primaryStage) throws Exception {
+    public void build() throws Exception {
         Scene scene = new Scene(createContent());
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.UP) {
@@ -173,10 +172,10 @@ public class MenuView {
             }
         });
 
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.setOnCloseRequest(event -> bgThread.shutdownNow());
-        primaryStage.show();
+        ps.setScene(scene);
+        ps.setResizable(false);
+        ps.setOnCloseRequest(event -> bgThread.shutdownNow());
+        ps.show();
     }
 
 
