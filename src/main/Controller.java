@@ -41,13 +41,13 @@ public class Controller implements KeyListener {
     }
 
     public void start() {
-        gameView = new GameView();
+        gameView = new GameView(ps);
         gameView.setKeyListener(this);
 
         crafts.add(new Craft());
 
         try {
-            gameView.build(ps);
+            gameView.build();
         } catch (Exception e) {
             e.printStackTrace();
         }

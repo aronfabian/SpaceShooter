@@ -10,7 +10,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         MenuView menuView = new MenuView(primaryStage);
-        menuView.build(primaryStage);
+        menuView.build();
         primaryStage.getIcons().add(new Image("gui/images/icon.png"));
 
     }
