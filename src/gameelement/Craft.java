@@ -1,5 +1,7 @@
 package gameelement;
 
+import java.io.Serializable;
+
 /**
  * Created by arons on 2017. 04. 29..
  */
@@ -87,5 +89,38 @@ public class Craft extends GameElement {
 
     public void setBulletPower(int bulletPower) {
         this.bulletPower = bulletPower;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Craft craft = (Craft) o;
+
+        if (bulletPower != craft.bulletPower) return false;
+        if (dx != craft.dx) return false;
+        if (score != craft.score) return false;
+        return hp == craft.hp;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = bulletPower;
+        result = 31 * result + dx;
+        result = 31 * result + score;
+        result = 31 * result + hp;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Craft{" +
+                "bulletPower=" + bulletPower +
+                ", dx=" + dx +
+                ", score=" + score +
+                ", hp=" + hp +
+                ", x=" + x +
+                '}';
     }
 }

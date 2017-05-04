@@ -7,6 +7,7 @@ public class Bullet extends GameElement {
     private int bulletPow;
     private boolean isCraftBullet;
     private boolean destroyBullet;
+    private int craftIndex;
     public static final int WIDTH = 15;
     public static final int HEIGHT = 15;
 
@@ -16,12 +17,22 @@ public class Bullet extends GameElement {
      * @param y coordinate
      * @param isCraftBullet =true if it belongs to a Craft
      */
+    public Bullet(int x, int y, boolean isCraftBullet, int bulletPow, boolean destroyBullet, int craftIndex) {
+        this.x = x;
+        this.y = y;
+        this.isCraftBullet = isCraftBullet;
+        this.bulletPow = bulletPow;
+        this.destroyBullet = destroyBullet;
+        this.craftIndex = craftIndex;
+    }
+
     public Bullet(int x, int y, boolean isCraftBullet, int bulletPow, boolean destroyBullet) {
         this.x = x;
         this.y = y;
         this.isCraftBullet = isCraftBullet;
         this.bulletPow = bulletPow;
         this.destroyBullet = destroyBullet;
+        this.craftIndex = 0;
     }
 
     public void move() {
@@ -30,6 +41,14 @@ public class Bullet extends GameElement {
         } else {
             y += 20;
         }
+    }
+
+    public int getCraftIndex() {
+        return craftIndex;
+    }
+
+    public void setCraftIndex(int craftIndex) {
+        this.craftIndex = craftIndex;
     }
 
     public int getBulletPow() {

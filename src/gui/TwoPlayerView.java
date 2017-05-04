@@ -18,6 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.Controller;
+import main.GameType;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -91,7 +92,7 @@ public class TwoPlayerView {
                 System.out.println(name + " activated");
                 switch (name) {
                     case "SERVER":
-                        Controller controller = new Controller(ps);
+                        Controller controller = new Controller(ps, GameType.SERVER, null);
                         controller.start();
                         break;
                     case "CLIENT":

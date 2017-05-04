@@ -40,7 +40,6 @@ public class GameView {
     private Stage ps;
     private Pane root;
     private ImageView background;
-    private ImageView craft;
     private Rectangle hpRect;
     private Label hpLabel;
     private Label scoreLabel;
@@ -48,6 +47,7 @@ public class GameView {
     private Label overLabel;
     private TextField nameField;
 
+    private final List<ImageView> crafts = new ArrayList<>();
     private final List<ImageView> bullets = new ArrayList<>();
     private final List<ImageView> ufos = new ArrayList<>();
     private final List<ImageView> asteroids = new ArrayList<>();
@@ -62,13 +62,19 @@ public class GameView {
         this.keyListener = keyListener;
     }
 
-    public void drawCraft(int x, int y) {
-        craft.setLayoutX(x);
-        craft.setLayoutY(y);
-        craftCoord.setText(x + ", " + y);
-        craftCoord.setLayoutY(y);
-        craftCoord.setLayoutX(x);
+    public void drawCraft(List<Craft> craftList) {
+        root.getChildren().removeAll(crafts);
+        crafts.clear();
+
+        for (Craft c : craftList) {
+            ImageView craft = new ImageView(CRAFT);
+            craft.setX(c.getX());
+            craft.setY(c.getY());
+            crafts.add(craft);
+            root.getChildren().addAll(craft);
+        }
     }
+
 
     public void drawBullets(List<Bullet> bulletList) {
         root.getChildren().removeAll(bullets);
@@ -179,8 +185,6 @@ public class GameView {
 
         background = new ImageView(new Image(BACKGORUND));
 
-        craft = new ImageView(new Image(CRAFT));
-
         hpRect = new Rectangle(100, 20);
         hpRect.setY(10);
         hpRect.setX(10);
@@ -206,7 +210,7 @@ public class GameView {
         craftCoord.setFont(Font.font("", FontWeight.BOLD, 20));
         craftCoord.setEffect(new GaussianBlur(1));
 
-        root.getChildren().addAll(background, craft, hpRect, hpLabel, scoreLabel, craftCoord);
+        root.getChildren().addAll(background, hpRect, hpLabel, scoreLabel, craftCoord);
         return root;
     }
 

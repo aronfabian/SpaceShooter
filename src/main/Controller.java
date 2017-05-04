@@ -8,6 +8,10 @@ import javafx.animation.Timeline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
+import network.ClientState;
+import network.Network;
+import network.NetworkClient;
+import network.NetworkServer;
 
 import java.io.*;
 import java.util.*;
@@ -35,17 +39,98 @@ public class Controller implements KeyListener {
     private Timeline ufoShootTimer;
     private Timeline giftTimer;
     private GameView gameView;
+    private GameType gameType;
+    private Network network;
+    private ClientState clientState;
 
     public Controller(Stage ps) {
         this.ps = ps;
+        gameType = GameType.SINGLEPLAYER;
+        network = null;
+        clientState = new ClientState();
+    }
+
+    public Controller(Stage ps, GameType gameType, String ip) {
+        this.ps = ps;
+        this.gameType = gameType;
+        switch (gameType) {
+            case SERVER:
+                network = new NetworkServer(this);
+                clientState = new ClientState();
+                break;
+            case CLIENT:
+                network = new NetworkClient(this, ip);
+                clientState = new ClientState();
+                break;
+            case SINGLEPLAYER:
+                network = null;
+                clientState = new ClientState();
+                break;
+        }
+    }
+
+    public List<Craft> getCrafts() {
+        return crafts;
+    }
+
+    public void setCrafts(List<Craft> crafts) {
+        this.crafts.clear();
+        this.crafts.addAll(crafts);
+    }
+
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public void setBullets(List<Bullet> bullets) {
+        this.bullets.clear();
+        this.bullets.addAll(bullets);
+    }
+
+    public List<Ufo> getUfos() {
+        return ufos;
+    }
+
+    public void setUfos(List<Ufo> ufos) {
+        this.ufos.clear();
+        this.ufos.addAll(ufos);
+    }
+
+    public List<Asteroid> getAsteroids() {
+        return asteroids;
+    }
+
+    public void setAsteroids(List<Asteroid> asteroids) {
+        this.asteroids.clear();
+        this.asteroids.addAll(asteroids);
+    }
+
+    public List<Gift> getGifts() {
+        return gifts;
+    }
+
+    public void setGifts(List<Gift> gifts) {
+        this.gifts.clear();
+        this.gifts.addAll(gifts);
     }
 
     public void start() {
         gameView = new GameView(ps);
         gameView.setKeyListener(this);
-
-        crafts.add(new Craft());
-
+        switch (gameType) {
+            case SINGLEPLAYER:
+                crafts.add(new Craft());
+                break;
+            case CLIENT:
+                crafts.add(new Craft(300, 770, 0, 3, 1)); //client's craft
+                crafts.add(new Craft(500, 770, 0, 3, 1));
+                network.connect();
+                break;
+            case SERVER:
+                crafts.add(new Craft(300, 770, 0, 3, 1)); // server's craft
+                crafts.add(new Craft(500, 770, 0, 3, 1));
+                network.connect();
+        }
         try {
             gameView.build();
         } catch (Exception e) {
@@ -53,24 +138,49 @@ public class Controller implements KeyListener {
         }
 
         timeline = new Timeline(new KeyFrame(Duration.millis(80), ev -> {
-            gameOverCheck();
-            elementCollision();
-            updateCraft();
-            updateBullet();
-            updateAsteroid();
-            updateUfo();
-            updateGift();
+            switch (gameType) {
+                case SERVER:
+                    gameOverCheck();
+                    elementCollision();
+                    updateCraft();
+                    updateBullet();
+                    updateAsteroid();
+                    updateUfo();
+                    updateGift();
+                    network.send();
+                    break;
+                case SINGLEPLAYER:
+                    gameOverCheck();
+                    elementCollision();
+                    updateCraft();
+                    updateBullet();
+                    updateAsteroid();
+                    updateUfo();
+                    updateGift();
+                    break;
+                case CLIENT:
+                    gameView.drawCraft(crafts);
+                    gameView.drawAsteroids(asteroids);
+                    gameView.drawBullets(bullets);
+                    gameView.drawUfos(ufos);
+                    gameView.drawGift(gifts);
+                    gameView.drawHp(crafts.get(1).getHp());
+                    gameView.drawScore(crafts.get(1).getScore());
+                    network.send();
+                    break;
+            }
+
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
         //4 másodpercenként megjelenik egy ufo (időzítő)
-        ufoTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> ufos.add(new Ufo())));
+        ufoTimer = new Timeline(new KeyFrame(Duration.seconds(8), ev -> ufos.add(new Ufo())));
         ufoTimer.setCycleCount(Animation.INDEFINITE);
         ufoTimer.play();
 
         //2 másodpercenként megjelenik egy aszteroida (időzítő)
-        asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> asteroids.add(new Asteroid())));
+        asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> asteroids.add(new Asteroid())));
         asteroidTimer.setCycleCount(Animation.INDEFINITE);
         asteroidTimer.play();
 
@@ -81,7 +191,7 @@ public class Controller implements KeyListener {
 
 
         //15 másodpercenként megjelenik egy ajándék
-        giftTimer = new Timeline(new KeyFrame(Duration.seconds(15), ev -> {
+        giftTimer = new Timeline(new KeyFrame(Duration.seconds(20), ev -> {
             if ((Math.random() > 0.5)) {
                 gifts.add(new HpGift());
             } else {
@@ -185,6 +295,26 @@ public class Controller implements KeyListener {
         }
     }
 
+    public ClientState getClientState() {
+        return clientState;
+    }
+
+    public void setClientState(ClientState clientState) {
+        this.clientState = clientState;
+    }
+
+    public boolean isRightPressed() {
+        return rightPressed;
+    }
+
+    public boolean isLeftPressed() {
+        return leftPressed;
+    }
+
+    public boolean isSpacePressed() {
+        return addBullet;
+    }
+
     @Override
     public void spacePressed() {
         addBullet = true;
@@ -198,33 +328,40 @@ public class Controller implements KeyListener {
     @Override
     public void rightPressed() {
         rightPressed = true;
-        crafts.get(0).setDx(10);
+        if (gameType != GameType.CLIENT) {
+            crafts.get(0).setDx(10);
+        }
     }
 
     @Override
     public void leftPressed() {
         leftPressed = true;
-        crafts.get(0).setDx(-10);
+        if (gameType != GameType.CLIENT) {
+            crafts.get(0).setDx(-10);
+        }
     }
 
     @Override
     public void rightReleased() {
         rightPressed = false;
-        if (leftPressed) {
-            crafts.get(0).setDx(-10);
-        } else {
-            crafts.get(0).setDx(0);
+        if (gameType != GameType.CLIENT) {
+            if (leftPressed) {
+                crafts.get(0).setDx(-10);
+            } else {
+                crafts.get(0).setDx(0);
+            }
         }
     }
 
     @Override
     public void leftReleased() {
-
         leftPressed = false;
-        if (rightPressed) {
-            crafts.get(0).setDx(10);
-        } else {
-            crafts.get(0).setDx(0);
+        if (gameType != GameType.CLIENT) {
+            if (rightPressed) {
+                crafts.get(0).setDx(10);
+            } else {
+                crafts.get(0).setDx(0);
+            }
         }
 
     }
@@ -240,18 +377,29 @@ public class Controller implements KeyListener {
 
     private void updateCraft() {
         for (Craft craft : crafts) {
-            gameView.drawCraft(craft.getX(), craft.getY());
 
-            if (addBullet) {
+            if ((addBullet && (crafts.indexOf(craft) == 0)) || (clientState.isSpacePressed() && (crafts.indexOf(craft) == 1))) {
 
-                //x+7, y+7: craft-bullet correction
-                bullets.add(new Bullet(craft.getX() + (Craft.WIDTH - Bullet.WIDTH) / 2, craft.getY() + Bullet.HEIGHT, true, 1, false));
+                // craft-bullet correction
+                bullets.add(new Bullet(craft.getX() + (Craft.WIDTH - Bullet.WIDTH) / 2, craft.getY() + Bullet.HEIGHT, true, 1, false, crafts.indexOf(craft)));
 
+            }
+            // TODO: csak teszt megoldás, meg kell csinálni rendesen
+            if (crafts.indexOf(craft) == 1) {
+                if (clientState.isLeftPressed()) {
+                    craft.setDx(-10);
+                }
+                if (clientState.isRightPressed()) {
+                    craft.setDx(10);
+                }
+                if (!clientState.isLeftPressed() && !clientState.isRightPressed()) {
+                    craft.setDx(0);
+                }
             }
             craft.move();
             gameView.drawHp(craft.getHp());
             gameView.drawScore(craft.getScore());
-            gameView.drawCraft(craft.getX(), craft.getY());
+            gameView.drawCraft(crafts);
         }
     }
 
