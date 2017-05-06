@@ -177,6 +177,32 @@ public class GameView {
         root.getChildren().addAll(overLabel, nameField);
     }
 
+    public void gameOverMulti(boolean isWinner) {
+        overLabel = new Label();
+        if (isWinner) {
+            overLabel.setText("CONGRATULATION\nYOU WIN");
+        } else {
+            overLabel.setText("YOU LOSE");
+        }
+        overLabel.setFont(FONT);
+        overLabel.setTextFill(Color.WHITE);
+        overLabel.setEffect(new GaussianBlur(2));
+        overLabel.setLayoutY(200);
+        overLabel.setLayoutX(230);
+        overLabel.setOnMouseClicked(event -> {
+
+            MenuView menuView = new MenuView(ps);
+            try {
+                menuView.build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        root.getChildren().addAll(overLabel);
+    }
+
     private final ScheduledExecutorService bgThread = Executors.newSingleThreadScheduledExecutor();
 
     private Parent createContent() {

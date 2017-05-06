@@ -120,16 +120,19 @@ public class Controller implements KeyListener {
         switch (gameType) {
             case SINGLEPLAYER:
                 crafts.add(new Craft());
+                startTimers();
                 break;
             case CLIENT:
                 crafts.add(new Craft(300, 770, 0, 3, 1)); //client's craft
                 crafts.add(new Craft(500, 770, 0, 3, 1));
                 network.connect();
+                startTimers();
                 break;
             case SERVER:
                 crafts.add(new Craft(300, 770, 0, 3, 1)); // server's craft
                 crafts.add(new Craft(500, 770, 0, 3, 1));
                 network.connect();
+
         }
         try {
             gameView.build();
@@ -137,6 +140,10 @@ public class Controller implements KeyListener {
             e.printStackTrace();
         }
 
+
+    }
+
+    public void startTimers() {
         timeline = new Timeline(new KeyFrame(Duration.millis(80), ev -> {
             switch (gameType) {
                 case SERVER:
@@ -159,6 +166,7 @@ public class Controller implements KeyListener {
                     updateGift();
                     break;
                 case CLIENT:
+                    gameOverCheck();
                     gameView.drawCraft(crafts);
                     gameView.drawAsteroids(asteroids);
                     gameView.drawBullets(bullets);
@@ -174,47 +182,71 @@ public class Controller implements KeyListener {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        //4 másodpercenként megjelenik egy ufo (időzítő)
-        ufoTimer = new Timeline(new KeyFrame(Duration.seconds(8), ev -> ufos.add(new Ufo())));
-        ufoTimer.setCycleCount(Animation.INDEFINITE);
-        ufoTimer.play();
+        if (gameType != GameType.CLIENT) {
+            //4 másodpercenként megjelenik egy ufo (időzítő)
+            ufoTimer = new Timeline(new KeyFrame(Duration.seconds(8), ev -> ufos.add(new Ufo())));
+            ufoTimer.setCycleCount(Animation.INDEFINITE);
+            ufoTimer.play();
 
-        //2 másodpercenként megjelenik egy aszteroida (időzítő)
-        asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> asteroids.add(new Asteroid())));
-        asteroidTimer.setCycleCount(Animation.INDEFINITE);
-        asteroidTimer.play();
+            //2 másodpercenként megjelenik egy aszteroida (időzítő)
+            asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> asteroids.add(new Asteroid())));
+            asteroidTimer.setCycleCount(Animation.INDEFINITE);
+            asteroidTimer.play();
 
-        //2 másodpercenként lőnek az ufók (időzítő)
-        ufoShootTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> addUfoBullet = true));
-        ufoShootTimer.setCycleCount(Animation.INDEFINITE);
-        ufoShootTimer.play();
+            //2 másodpercenként lőnek az ufók (időzítő)
+            ufoShootTimer = new Timeline(new KeyFrame(Duration.seconds(2), ev -> addUfoBullet = true));
+            ufoShootTimer.setCycleCount(Animation.INDEFINITE);
+            ufoShootTimer.play();
 
 
-        //15 másodpercenként megjelenik egy ajándék
-        giftTimer = new Timeline(new KeyFrame(Duration.seconds(20), ev -> {
-            if ((Math.random() > 0.5)) {
-                gifts.add(new HpGift());
-            } else {
-                gifts.add(new WeaponGift());
-            }
+            //15 másodpercenként megjelenik egy ajándék
+            giftTimer = new Timeline(new KeyFrame(Duration.seconds(20), ev -> {
+                if ((Math.random() > 0.5)) {
+                    gifts.add(new HpGift());
+                } else {
+                    gifts.add(new WeaponGift());
+                }
 
-        }));
-        giftTimer.setCycleCount(Animation.INDEFINITE);
-        giftTimer.play();
+            }));
+            giftTimer.setCycleCount(Animation.INDEFINITE);
+            giftTimer.play();
+        }
 
+    }
+
+    public void stopTimers() {
+        timeline.stop();
+        ufoTimer.stop();
+        asteroidTimer.stop();
+        ufoShootTimer.stop();
+        giftTimer.stop();
     }
 
     private void gameOverCheck() {
         for (Craft craft : crafts) {
             if (craft.getHp() <= 0) {
                 // stop timers
-                timeline.stop();
-                ufoTimer.stop();
-                asteroidTimer.stop();
-                ufoShootTimer.stop();
-                giftTimer.stop();
+                if (gameType != GameType.CLIENT) {
+                    stopTimers();
+                }
                 // draw game over and get player name
-                gameView.gameOver();
+                if (gameType == GameType.SINGLEPLAYER) {
+                    gameView.gameOver();
+                } else {
+                    network.disconnect();
+                    boolean result = false;
+                    if (gameType == GameType.SERVER) {
+                        if (crafts.get(0).getScore() >= crafts.get(1).getScore()) {
+                            result = true; //win
+                        }
+                    } else {
+                        if (crafts.get(1).getScore() >= crafts.get(0).getScore()) {
+                            result = true; //win
+                        }
+                    }
+                    gameView.gameOverMulti(result);
+                }
+
             }
         }
     }
