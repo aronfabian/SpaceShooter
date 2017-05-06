@@ -41,7 +41,9 @@ public class GameView {
     private Pane root;
     private ImageView background;
     private Rectangle hpRect;
+    private Rectangle weaponRect;
     private Label hpLabel;
+    private Label weaponLabel;
     private Label scoreLabel;
     private Label craftCoord;
     private Label overLabel;
@@ -132,7 +134,11 @@ public class GameView {
         hpLabel.setText("HP: " + hp);
 
     }
-
+    public void drawWeapon(int weapon){
+        weaponRect.setWidth(weapon*20);
+        weaponRect.setFill(Color.BLUE);
+        weaponLabel.setText("Power: "+weapon);
+    }
     public void drawGift(List<Gift> giftList) {
         root.getChildren().removeAll(gifts);
         gifts.clear();
@@ -218,17 +224,29 @@ public class GameView {
 
         hpLabel = new Label("HP: 3");
         hpLabel.setLayoutX(15);
-        hpLabel.setLayoutY(5);
+        hpLabel.setLayoutY(7);
         hpLabel.setTextFill(Color.WHITE);
         hpLabel.setFont(Font.font("", FontWeight.BOLD, 20));
         hpLabel.setEffect(new GaussianBlur(1));
 
         scoreLabel = new Label("Score:");
-        scoreLabel.setLayoutY(30);
+        scoreLabel.setLayoutY(50);
         scoreLabel.setLayoutX(15);
         scoreLabel.setTextFill(Color.WHITE);
         scoreLabel.setFont(Font.font("", FontWeight.BOLD, 20));
         scoreLabel.setEffect(new GaussianBlur(1));
+
+        weaponRect=new Rectangle(100,20);
+        weaponRect.setX(10);
+        weaponRect.setY(30);
+        weaponRect.setFill(Color.BLUE);
+
+        weaponLabel=new Label("Power: 1");
+        weaponLabel.setLayoutX(15);
+        weaponLabel.setLayoutY(27);
+        weaponLabel.setTextFill(Color.WHITE);
+        weaponLabel.setFont(Font.font("", FontWeight.BOLD, 20));
+        weaponLabel.setEffect(new GaussianBlur(1));
 
         craftCoord = new Label();
         craftCoord.setText("");
@@ -236,7 +254,7 @@ public class GameView {
         craftCoord.setFont(Font.font("", FontWeight.BOLD, 20));
         craftCoord.setEffect(new GaussianBlur(1));
 
-        root.getChildren().addAll(background, hpRect, hpLabel, scoreLabel, craftCoord);
+        root.getChildren().addAll(background, hpRect, hpLabel, scoreLabel, craftCoord,weaponRect,weaponLabel);
         return root;
     }
 

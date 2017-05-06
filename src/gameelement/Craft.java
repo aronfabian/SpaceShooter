@@ -59,7 +59,7 @@ public class Craft extends GameElement {
     }
 
 
-    public int getBulletPower() {
+    public int getWeaponPower() {
         return bulletPower;
     }
 
