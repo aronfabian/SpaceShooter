@@ -622,10 +622,10 @@ public class Controller implements KeyListener {
 
                     } else {
                         WeaponGift weapongift = (WeaponGift) gift;
-                        craft.setBulletPower(craft.getWeaponPower() + weapongift.getWeaponPow());
+                        craft.setWeaponPower((craft.getWeaponPower() + weapongift.getWeaponPow()));
                         if (craft.getWeaponPower() + weapongift.getWeaponPow() > 5) //max weapon power: 5
                         {
-                            craft.setBulletPower(5);
+                            craft.setWeaponPower(5);
                         }
                     }
                     gift.setExist(false);
