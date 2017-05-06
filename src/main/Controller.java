@@ -551,7 +551,7 @@ public class Controller implements KeyListener {
                     {
                         ufo.setHp(ufo.getHp() - bullet.getBulletPow()); //decrease Ufo HP
                         bullet.setDestroyBullet(true); //destroy bullet flag=1
-                        crafts.get(0).setScore(crafts.get(0).getScore() + 20); //increase player's score
+                        crafts.get(bullet.getCraftIndex()).setScore(crafts.get(bullet.getCraftIndex()).getScore() + 20); //increase player's score
                     }
                 }
                 for (Asteroid asteroid : asteroids) {
@@ -560,7 +560,7 @@ public class Controller implements KeyListener {
                     {
                         asteroid.setHp(asteroid.getHp() - bullet.getBulletPow()); //decrease Asteroid HP
                         bullet.setDestroyBullet(true); //destroy bullet flag=1
-                        crafts.get(0).setScore(crafts.get(0).getScore() + 10); //increase player's score
+                        crafts.get(bullet.getCraftIndex()).setScore(crafts.get(bullet.getCraftIndex()).getScore() + 10); //increase player's score
                     }
                 }
             } else //if bullet was shot by one of the Ufo
