@@ -129,14 +129,14 @@ public class Controller implements KeyListener {
                 startTimers();
                 break;
             case CLIENT:
-                crafts.add(new Craft(300, 770, 0, 3, 1)); //client's craft
-                crafts.add(new Craft(500, 770, 0, 3, 1));
+                crafts.add(0, new Craft(300, 770, 0, 3, 1)); //server's craft
+                crafts.add(1, new Craft(500, 770, 0, 3, 1)); //client's craft
                 network.connect();
                 startTimers();
                 break;
             case SERVER:
-                crafts.add(new Craft(300, 770, 0, 3, 1)); // server's craft
-                crafts.add(new Craft(500, 770, 0, 3, 1));
+                crafts.add(0, new Craft(300, 770, 0, 3, 1)); // server's craft
+                crafts.add(1, new Craft(500, 770, 0, 3, 1)); //client's craft
                 network.connect();
 
         }
@@ -189,6 +189,7 @@ public class Controller implements KeyListener {
             ufoTimer = new Timeline(new KeyFrame(Duration.seconds(8), ev -> ufos.add(new Ufo())));
             ufoTimer.setCycleCount(Animation.INDEFINITE);
             ufoTimer.play();
+
 
             //2 másodpercenként megjelenik egy aszteroida (időzítő)
             asteroidTimer = new Timeline(new KeyFrame(Duration.seconds(4), ev -> asteroids.add(new Asteroid())));
