@@ -10,7 +10,7 @@ public class Craft extends GameElement {
     private int dx;
     private int score;
     private int hp;
-    private int bulletPower;
+    private int weaponPower;
     public static final int WIDTH = 72;
     public static final int HEIGHT = 71;
     public static final int MAXHP = 3;
@@ -21,7 +21,7 @@ public class Craft extends GameElement {
         this.y = y;
         this.score = score;
         this.hp = hp;
-        this.bulletPower = bulletPower;
+        this.weaponPower = bulletPower;
     }
 
     public Craft() {
@@ -29,7 +29,7 @@ public class Craft extends GameElement {
         y = 770;
         score = 0;
         hp = 3;
-        bulletPower = 1;
+        weaponPower = 1;
     }
 
     public void setDx(int dx) {
@@ -58,9 +58,12 @@ public class Craft extends GameElement {
         }
     }
 
+    public void setWeaponPower(int weaponPower) {
+        this.weaponPower = weaponPower;
+    }
 
     public int getWeaponPower() {
-        return bulletPower;
+        return weaponPower;
     }
 
 
@@ -86,9 +89,7 @@ public class Craft extends GameElement {
         x += dx;
     }
 
-    public void setBulletPower(int bulletPower) {
-        this.bulletPower = bulletPower;
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -97,7 +98,7 @@ public class Craft extends GameElement {
 
         Craft craft = (Craft) o;
 
-        if (bulletPower != craft.bulletPower) return false;
+        if (weaponPower != craft.weaponPower) return false;
         if (dx != craft.dx) return false;
         if (score != craft.score) return false;
         return hp == craft.hp;
@@ -105,7 +106,7 @@ public class Craft extends GameElement {
 
     @Override
     public int hashCode() {
-        int result = bulletPower;
+        int result = weaponPower;
         result = 31 * result + dx;
         result = 31 * result + score;
         result = 31 * result + hp;
@@ -115,7 +116,7 @@ public class Craft extends GameElement {
     @Override
     public String toString() {
         return "Craft{" +
-                "bulletPower=" + bulletPower +
+                "weaponPower=" + weaponPower +
                 ", dx=" + dx +
                 ", score=" + score +
                 ", hp=" + hp +

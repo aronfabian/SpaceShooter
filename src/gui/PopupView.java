@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -37,7 +38,7 @@ public class PopupView {
         String ip = textField.getText();
         if ((ip.length() == 0) || !validate(ip)) {
             label.setText("Not valid IP address!");
-            
+
         } else {
             popup.hide();
             Controller controller = new Controller(ps, GameType.CLIENT, ip);
@@ -56,7 +57,9 @@ public class PopupView {
 
         textField = new TextField();
         textField.setOnKeyPressed(event -> {
-            eventHandler();
+            if (event.getCode() == KeyCode.ENTER) {
+                eventHandler();
+            }
         });
 
         Button btn1 = new Button();
