@@ -48,7 +48,8 @@ public class PopupView {
     public PopupView(Stage ps) {
         this.ps = ps;
         popup = new Popup();
-        //popup.setX(300); popup.setY(200);
+        popup.setX(ps.getX() + 180);
+        popup.setY(ps.getY() + 180);
         label = new Label();
         label.setText("Please give the server IP!");
         label.setFont(Font.font("", FontWeight.BOLD, 20));
