@@ -201,14 +201,17 @@ public class GameView {
         overLabel = new Label();
         if (isWinner) {
             overLabel.setText("CONGRATULATION\nYOU WIN");
+            overLabel.setLayoutY(200);
+            overLabel.setLayoutX(180);
         } else {
             overLabel.setText("YOU LOSE");
+            overLabel.setLayoutY(200);
+            overLabel.setLayoutX(230);
         }
         overLabel.setFont(FONT);
         overLabel.setTextFill(Color.WHITE);
         overLabel.setEffect(new GaussianBlur(2));
-        overLabel.setLayoutY(200);
-        overLabel.setLayoutX(230);
+
         overLabel.setOnMouseClicked(event -> {
 
             MenuView menuView = new MenuView(ps);

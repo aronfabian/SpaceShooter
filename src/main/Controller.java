@@ -15,17 +15,18 @@ import network.NetworkServer;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Controller implements KeyListener {
 
     private static final int WINDOWBOTTOM = 900;
     private static final int WINDOWTOP = 0;
     private static final int BULLETOFFSET = 30;
-    private final List<Craft> crafts = new ArrayList<>();
-    private final List<Bullet> bullets = new ArrayList<>();
-    private final List<Ufo> ufos = new ArrayList<>();
-    private final List<Asteroid> asteroids = new ArrayList<>();
-    private final List<Gift> gifts = new ArrayList<>();
+    private final List<Craft> crafts = new CopyOnWriteArrayList<>();
+    private final List<Bullet> bullets = new CopyOnWriteArrayList<>();
+    private final List<Ufo> ufos = new CopyOnWriteArrayList<>();
+    private final List<Asteroid> asteroids = new CopyOnWriteArrayList<>();
+    private final List<Gift> gifts = new CopyOnWriteArrayList<>();
 
     private final Stage ps;
     private boolean addBullet = false;
@@ -451,12 +452,9 @@ public class Controller implements KeyListener {
 
         AsteroidOutOfFrame();
         //remove asteroids
-        Iterator<Asteroid> iter1 = asteroids.iterator();
-        while (iter1.hasNext()) {
-
-            Asteroid asteroid = iter1.next();
+        for (Asteroid asteroid : asteroids) {
             if (asteroid.getHp() <= 0) {
-                iter1.remove();
+                asteroids.remove(asteroid);
             }
         }
         //move asteroids
@@ -470,11 +468,10 @@ public class Controller implements KeyListener {
 
         UfoOutOfFrame();
         //remove asteroids
-        Iterator<Ufo> iter = ufos.iterator();
-        while (iter.hasNext()) {
-            Ufo ufo = iter.next();
+        for (Ufo ufo : ufos) {
+
             if (ufo.getHp() <= 0) {
-                iter.remove();
+                ufos.remove(ufo);
             }
 
         }
@@ -501,11 +498,10 @@ public class Controller implements KeyListener {
         bulletOutOfFrame();
 
         //remove bullets
-        Iterator<Bullet> iter = bullets.iterator();
-        while (iter.hasNext()) {
-            Bullet bullet = iter.next();
+
+        for (Bullet bullet : bullets) {
             if (bullet.getDestroyBullet()) {
-                iter.remove();
+                bullets.remove(bullet);
             }
 
         }
@@ -521,11 +517,9 @@ public class Controller implements KeyListener {
         GiftOutOfFrame();
 
         //remove gifts
-        Iterator<Gift> iter = gifts.iterator();
-        while (iter.hasNext()) {
-            Gift gift = iter.next();
+        for (Gift gift : gifts) {
             if (!gift.isExist()) {
-                iter.remove();
+                gifts.remove(gift);
             }
         }
 
