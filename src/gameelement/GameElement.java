@@ -1,9 +1,11 @@
 package gameelement;
 
+import java.io.Serializable;
+
 /**
  * Created by arons on 2017. 05. 01..
  */
-public class GameElement {
+public class GameElement implements Serializable {
     public static final int MAXSREENWITH = 800;
 
     protected int x;
