@@ -397,8 +397,18 @@ public class Controller implements KeyListener {
                 }
             }
             craft.move();
-            gameView.drawHp(craft.getHp());
-            gameView.drawScore(craft.getScore());
+            if ((crafts.indexOf(craft) == 1) && (gameType == GameType.CLIENT)) {
+                gameView.drawHp(craft.getHp());
+                gameView.drawScore(craft.getScore());
+                gameView.drawWeapon(craft.getWeaponPower());
+            }
+            if ((crafts.indexOf(craft) == 0) && ((gameType == GameType.SERVER) || (gameType == GameType.SINGLEPLAYER))) {
+                gameView.drawHp(craft.getHp());
+                gameView.drawScore(craft.getScore());
+                gameView.drawWeapon(craft.getWeaponPower());
+            }
+
+
             gameView.drawCraft(crafts);
         }
     }
@@ -585,7 +595,11 @@ public class Controller implements KeyListener {
 
                     } else {
                         WeaponGift weapongift = (WeaponGift) gift;
-                        craft.setBulletPower(craft.getBulletPower() + weapongift.getWeaponPow());
+                        craft.setBulletPower(craft.getWeaponPower() + weapongift.getWeaponPow());
+                        if(craft.getWeaponPower()+weapongift.getWeaponPow()>5) //max weapon power: 5
+                        {
+                            craft.setBulletPower(5);
+                        }
                     }
                     gift.setExist(false);
                 }

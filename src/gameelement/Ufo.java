@@ -26,7 +26,7 @@ public class Ufo extends Enemy {
         periodCounter = 0;
         dx = 5;
         dy = 5;
-        hp = 1;
+        hp = 4;
         this.x = (int) (Math.random() * (MAXSREENWITH - WIDTH - MOVEPERIOD * dx));
         this.y = -70;
     }
