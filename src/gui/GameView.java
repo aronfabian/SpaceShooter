@@ -134,11 +134,13 @@ public class GameView {
         hpLabel.setText("HP: " + hp);
 
     }
-    public void drawWeapon(int weapon){
-        weaponRect.setWidth(weapon*20);
+
+    public void drawWeapon(int weapon) {
+        weaponRect.setWidth(weapon * 20);
         weaponRect.setFill(Color.BLUE);
-        weaponLabel.setText("Power: "+weapon);
+        weaponLabel.setText("Power: " + weapon);
     }
+
     public void drawGift(List<Gift> giftList) {
         root.getChildren().removeAll(gifts);
         gifts.clear();
@@ -236,12 +238,12 @@ public class GameView {
         scoreLabel.setFont(Font.font("", FontWeight.BOLD, 20));
         scoreLabel.setEffect(new GaussianBlur(1));
 
-        weaponRect=new Rectangle(100,20);
+        weaponRect = new Rectangle(100, 20);
         weaponRect.setX(10);
         weaponRect.setY(30);
         weaponRect.setFill(Color.BLUE);
 
-        weaponLabel=new Label("Power: 1");
+        weaponLabel = new Label("Power: 1");
         weaponLabel.setLayoutX(15);
         weaponLabel.setLayoutY(27);
         weaponLabel.setTextFill(Color.WHITE);
@@ -254,7 +256,7 @@ public class GameView {
         craftCoord.setFont(Font.font("", FontWeight.BOLD, 20));
         craftCoord.setEffect(new GaussianBlur(1));
 
-        root.getChildren().addAll(background, hpRect, hpLabel, scoreLabel, craftCoord,weaponRect,weaponLabel);
+        root.getChildren().addAll(background, hpRect, hpLabel, scoreLabel, craftCoord, weaponRect, weaponLabel);
         return root;
     }
 

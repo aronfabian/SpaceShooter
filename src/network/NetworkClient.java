@@ -58,8 +58,8 @@ public class NetworkClient extends Network {
     public void connect() {
         disconnect();
         try {
-            //socket = new Socket(serverIp, PORT);
-            socket = new Socket(InetAddress.getLocalHost(), PORT);
+            socket = new Socket(serverIp, PORT);
+            //socket = new Socket(InetAddress.getLocalHost(), PORT);
 
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
@@ -77,7 +77,7 @@ public class NetworkClient extends Network {
     @Override
     public void disconnect() {
         try {
-            controller.stopTimers();
+
             if (out != null)
                 out.close();
             if (in != null)

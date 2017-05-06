@@ -80,7 +80,6 @@ public class NetworkServer extends Network {
     @Override
     public void disconnect() {
         try {
-            controller.stopTimers();
             if (out != null)
                 out.close();
             if (in != null)
