@@ -117,6 +117,11 @@ public class Controller implements KeyListener {
     public void start() {
         gameView = new GameView(ps);
         gameView.setKeyListener(this);
+        try {
+            gameView.build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         switch (gameType) {
             case SINGLEPLAYER:
                 crafts.add(new Craft());
@@ -134,11 +139,7 @@ public class Controller implements KeyListener {
                 network.connect();
 
         }
-        try {
-            gameView.build();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
 
     }
@@ -233,7 +234,6 @@ public class Controller implements KeyListener {
                 if (gameType == GameType.SINGLEPLAYER) {
                     gameView.gameOver();
                 } else {
-                    network.disconnect();
                     boolean result = false;
                     if (gameType == GameType.SERVER) {
                         if (crafts.get(0).getScore() >= crafts.get(1).getScore()) {
@@ -248,6 +248,7 @@ public class Controller implements KeyListener {
                 }
 
             }
+            
         }
     }
 
