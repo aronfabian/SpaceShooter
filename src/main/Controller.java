@@ -141,7 +141,6 @@ public class Controller implements KeyListener {
         }
 
 
-
     }
 
     public void startTimers() {
@@ -168,13 +167,14 @@ public class Controller implements KeyListener {
                     break;
                 case CLIENT:
                     gameOverCheck();
-                    gameView.drawCraft(crafts);
+                    gameView.drawCraft(crafts, gameType);
                     gameView.drawAsteroids(asteroids);
                     gameView.drawBullets(bullets);
                     gameView.drawUfos(ufos);
                     gameView.drawGift(gifts);
                     gameView.drawHp(crafts.get(1).getHp());
                     gameView.drawScore(crafts.get(1).getScore());
+                    gameView.drawWeapon(crafts.get(1).getWeaponPower());
                     network.send();
                     break;
             }
@@ -248,7 +248,7 @@ public class Controller implements KeyListener {
                 }
 
             }
-            
+
         }
     }
 
@@ -442,7 +442,7 @@ public class Controller implements KeyListener {
             }
 
 
-            gameView.drawCraft(crafts);
+            gameView.drawCraft(crafts, gameType);
         }
     }
 
@@ -629,7 +629,7 @@ public class Controller implements KeyListener {
                     } else {
                         WeaponGift weapongift = (WeaponGift) gift;
                         craft.setBulletPower(craft.getWeaponPower() + weapongift.getWeaponPow());
-                        if(craft.getWeaponPower()+weapongift.getWeaponPow()>5) //max weapon power: 5
+                        if (craft.getWeaponPower() + weapongift.getWeaponPow() > 5) //max weapon power: 5
                         {
                             craft.setBulletPower(5);
                         }

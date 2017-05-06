@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import main.GameType;
 import main.KeyListener;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class GameView {
         this.keyListener = keyListener;
     }
 
-    public void drawCraft(List<Craft> craftList) {
+    public void drawCraft(List<Craft> craftList, GameType gameType) {
         root.getChildren().removeAll(crafts);
         crafts.clear();
 
@@ -72,6 +73,17 @@ public class GameView {
             ImageView craft = new ImageView(CRAFT);
             craft.setX(c.getX());
             craft.setY(c.getY());
+            if (gameType == GameType.SERVER) {
+                if (craftList.indexOf(c) == 1) {
+                    craft.setOpacity(0.5);
+                }
+            }
+            if (gameType == GameType.CLIENT) {
+                if (craftList.indexOf(c) == 0) {
+                    craft.setOpacity(0.5);
+                }
+            }
+
             crafts.add(craft);
             root.getChildren().addAll(craft);
         }
@@ -238,7 +250,7 @@ public class GameView {
         scoreLabel.setFont(Font.font("", FontWeight.BOLD, 20));
         scoreLabel.setEffect(new GaussianBlur(1));
 
-        weaponRect = new Rectangle(100, 20);
+        weaponRect = new Rectangle(20, 20);
         weaponRect.setX(10);
         weaponRect.setY(30);
         weaponRect.setFill(Color.BLUE);
