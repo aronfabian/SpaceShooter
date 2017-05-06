@@ -37,7 +37,7 @@ public class PopupView {
         String ip = textField.getText();
         if ((ip.length() == 0) || !validate(ip)) {
             label.setText("Not valid IP address!");
-            return;
+            
         } else {
             popup.hide();
             Controller controller = new Controller(ps, GameType.CLIENT, ip);

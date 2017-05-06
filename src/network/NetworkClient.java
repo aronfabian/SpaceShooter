@@ -46,6 +46,7 @@ public class NetworkClient extends Network {
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
                 System.err.println("Server disconnected!");
+                controller.stopTimers();
             } finally {
                 disconnect();
             }
@@ -76,6 +77,7 @@ public class NetworkClient extends Network {
     @Override
     public void disconnect() {
         try {
+            controller.stopTimers();
             if (out != null)
                 out.close();
             if (in != null)

@@ -30,6 +30,7 @@ public class NetworkServer extends Network {
             try {
                 System.out.println("Waiting for Client");
                 clientSocket = serverSocket.accept();
+                controller.startTimers();
                 System.out.println("Client connected.");
             } catch (IOException e) {
                 System.err.println("Accept failed.");
@@ -56,6 +57,7 @@ public class NetworkServer extends Network {
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
                 System.err.println("Client disconnected!");
+                controller.stopTimers();
             } finally {
                 disconnect();
             }
@@ -78,6 +80,7 @@ public class NetworkServer extends Network {
     @Override
     public void disconnect() {
         try {
+            controller.stopTimers();
             if (out != null)
                 out.close();
             if (in != null)
