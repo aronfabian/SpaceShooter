@@ -16,12 +16,12 @@ public class Craft extends GameElement {
     public static final int MAXHP = 3;
 
 
-    public Craft(int x, int y, int score, int hp, int bulletPower) {
+    public Craft(int x, int y, int score, int hp, int weaponPower) {
         this.x = x;
         this.y = y;
         this.score = score;
         this.hp = hp;
-        this.weaponPower = bulletPower;
+        this.weaponPower = weaponPower;
     }
 
     public Craft() {

@@ -168,7 +168,7 @@ public class Controller implements KeyListener {
                     break;
                 case CLIENT:
                     gameOverCheck();
-                    gameView.drawCraft(crafts, gameType);
+                    gameView.drawCrafts(crafts, gameType);
                     gameView.drawAsteroids(asteroids);
                     gameView.drawBullets(bullets);
                     gameView.drawUfos(ufos);
@@ -444,7 +444,7 @@ public class Controller implements KeyListener {
             }
 
 
-            gameView.drawCraft(crafts, gameType);
+            gameView.drawCrafts(crafts, gameType);
         }
     }
 
