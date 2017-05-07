@@ -53,6 +53,7 @@ public class NetworkServer extends Network {
                 while (true) {
                     ClientState clientState = (ClientState) in.readObject();
                     controller.setClientState(clientState);
+                    System.out.println(clientState.isLeftPressed());
                 }
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());

@@ -65,14 +65,12 @@ public class GameView {
         this.keyListener = keyListener;
     }
 
-    public void drawCraft(List<Craft> craftList, GameType gameType) {
+    public void drawCrafts(List<Craft> craftList, GameType gameType) {
         root.getChildren().removeAll(crafts);
         crafts.clear();
 
         for (Craft c : craftList) {
             ImageView craft = new ImageView(CRAFT);
-            craft.setX(c.getX());
-            craft.setY(c.getY());
             if (gameType == GameType.SERVER) {
                 if (craftList.indexOf(c) == 1) {
                     craft.setOpacity(0.5);
@@ -83,6 +81,9 @@ public class GameView {
                     craft.setOpacity(0.5);
                 }
             }
+            craft.setX(c.getX());
+            craft.setY(c.getY());
+
 
             crafts.add(craft);
             root.getChildren().addAll(craft);
